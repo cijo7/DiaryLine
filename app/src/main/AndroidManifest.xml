@@ -35,6 +35,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="DLMainActivity" />
         </activity>
+        <activity
+            android:name=".Editor"
+            android:label="@string/title_activity_editor"
+            android:parentActivityName=".DLMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.solidskulls.diaryline.DLMainActivity" />
+        </activity>
+        <provider
+            android:name=".ContentManager"
+            android:authorities="soidskulls.dairyline"
+            android:enabled="true"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>

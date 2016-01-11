@@ -1,0 +1,35 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context="com.solidskulls.diaryline.NotifyTasks"
+    tools:showIn="@layout/activity_dlmain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+     android:padding="@dimen/popup_margin">
+
+
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textAppearance="?android:attr/textAppearanceLarge"
+         android:text="@string/notify_default_message"
+         android:id="@+id/notify_message" />
+
+     <Button
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/notify_button_1"
+         android:id="@+id/button_later"
+         android:layout_alignParentLeft="true"
+         android:layout_below="@+id/notify_message"
+         style="@style/punkyButton"
+         />
+
+     <Button
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/notify_button_2"
+         android:id="@+id/button_action"
+         android:layout_below="@id/notify_message"
+         android:layout_alignParentRight="true"
+         style="@style/punkyButton"
+         />
+ </RelativeLayout>
