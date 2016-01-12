@@ -1,52 +1,78 @@
 package com.solidskulls.diaryline;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import java.util.Calendar;
 
 public class Editor extends AppCompatActivity {
+
+    static final String EDITOR_MODE="EditorMode";
+    static final String EDITOR_INIT_DAYS="totalDays";
+    static final int EDITOR_MODE_ADD=1;
+    static final int EDITOR_MODE_UPDATE=2;
+    private int editorMode;
+    private long days;
+    private EditText editorText;
+
+    private static DataBlockManager dataBlockManager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras=getIntent().getExtras();
+        editorMode=extras.getInt(EDITOR_MODE);
+        if(editorMode==EDITOR_MODE_UPDATE)
+            days=extras.getLong(EDITOR_INIT_DAYS);
         setContentView(R.layout.activity_editor);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button done = (Button) findViewById(R.id.button_publish);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickAddName(view);
-                Snackbar.make(view, "Saved", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-    public void onClickAddName(View view) {
-// Add a new student record
-        ContentValues values = new ContentValues();
-        values.put(ContentManager.TEXT,((EditText)findViewById(R.id.diaryInputString)).getText().toString());
-        values.put(ContentManager.DATE,getDay());
-        Uri uri = (new ContentManager()).insert(
-                ContentManager.CONTENT_URI, values);
-        Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
+        android.support.v7.app.ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        editorText=(EditText)findViewById(R.id.diaryInputString);
     }
 
-    public static long getDay(){
-        return (Calendar.getInstance().getTimeInMillis()/(1000*60*60*24));
+    @Override
+    public void onStart(){
+        super.onStart();
+        switch (editorMode){
+            case EDITOR_MODE_ADD:
+                dataBlockManager=new DataBlockManager();
+                break;
+            case EDITOR_MODE_UPDATE:
+                dataBlockManager=new DataBlockManager(days);
+                dataBlockManager.readPackage();
+                editorText.setText(dataBlockManager.getStringData());
+                break;
+        }
+    }
+    /**
+     * Publish the editing
+     * @param view The View
+     */
+    public void publish(View view) {
+
+        switch (editorMode){
+            case EDITOR_MODE_ADD:
+                dataBlockManager.addPackage(editorText.getText().toString());
+                break;
+            case EDITOR_MODE_UPDATE:
+                dataBlockManager.updatePackage(editorText.getText().toString());
+                break;
+            default:
+                Log.d("Editor","Invalid Mode");
+                break;
+        }
+        Log.d("Editor","Uri:"+DataBlockManager.lastUri);
+        Snackbar.make(view, "Saved", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 }

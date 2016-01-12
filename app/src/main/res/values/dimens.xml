@@ -6,7 +6,7 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="popup_margin">20dp</dimen>
-    <dimen name="content_margin">10dp</dimen>
+    <dimen name="content_padding">10dp</dimen>
 
     <dimen name="writtenTextSize">15pt</dimen>
     <dimen name="buttonTextSize">15dp</dimen>

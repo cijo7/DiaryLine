@@ -1,20 +1,18 @@
 package com.solidskulls.diaryline;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
 public class ContentManager extends ContentProvider {
@@ -36,6 +34,7 @@ public class ContentManager extends ContentProvider {
     static final int ITEM=1;
     static final int LIST=2;
     static final String CONTENT_TYPE_ITEM="vnd.android.cursor.item/vnd.solidskulls.diaryline";
+    static final String CONTENT_TYPE_LIST="vnd.android.cursor.dir/vnd.solidskulls.diaryline";
 
     private static HashMap<String, String> DIARY_PROJECTION_MAP;
 
@@ -88,23 +87,19 @@ public class ContentManager extends ContentProvider {
         // at the given URI.
         switch (uriMatcher.match(uri)){
             case ITEM:return CONTENT_TYPE_ITEM;
-
+            case LIST:return CONTENT_TYPE_LIST;
             default:
                 throw new IllegalArgumentException("Invalid URI"+uri);
         }
     }
 
     @Override
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values)  {
         long rowId=db.insert(DATABASE_TABLE_NAME,"",values);
-        try {
+
             if (rowId > 0)
                 return ContentUris.withAppendedId(CONTENT_URI, rowId);
             throw new SQLException("Unable to add record:" + uri);
-        }catch (SQLException e){
-            Log.d("ContentManager insert","SQL Insertion Operation Failed");
-        }
-        return null;
     }
 
 
@@ -124,9 +119,7 @@ public class ContentManager extends ContentProvider {
         }
         if(sortOrder==null)
             sortOrder=DATE;
-
-        Cursor c=qb.query(db,projection,selection,selectionArgs,null,null,sortOrder);
-        return  c;
+        return  qb.query(db,projection,selection,selectionArgs,null,null,sortOrder);
     }
 
     @Override
@@ -138,6 +131,9 @@ public class ContentManager extends ContentProvider {
                 if(selection!=null)
                     where+=" AND "+selection;
                 updated=db.update(DATABASE_TABLE_NAME,values,where,selectionArgs);
+                break;
+            case LIST:
+                updated=db.update(DATABASE_TABLE_NAME,values,selection,selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid URI for update operation"+uri);
@@ -154,6 +150,9 @@ public class ContentManager extends ContentProvider {
                 if(selection!=null)
                     where+=" AND "+selection;
                 deleted=db.delete(DATABASE_TABLE_NAME,where,selectionArgs);
+                break;
+            case LIST:
+                deleted=db.delete(DATABASE_TABLE_NAME,selection,selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid URI for delete operation"+uri);

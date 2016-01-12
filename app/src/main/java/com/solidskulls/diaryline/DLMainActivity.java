@@ -5,52 +5,48 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.Calendar;
-import java.util.Date;
+import android.view.View;
 
 public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnFragmentInteractionListener,DiaryTextPreview.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    NotifyTasks n;
+
+    NotifyTasks notifyTasks;
+    private boolean notificationStatus =false;
+
+    private DataBlockManager dataBlockManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dlmain);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Calendar c=Calendar.getInstance();
 
-        Log.d("Date","Days :"+(c.getTimeInMillis()/(1000*60*60*24)));
-
+        dataBlockManager=new DataBlockManager();
     }
     @Override
     public void onStart(){
         super.onStart();
         fragmentManager=getFragmentManager();
         fragmentTransaction=fragmentManager.beginTransaction();
-        if(true){
-            n= NotifyTasks.newInstance("Add your biography", "editor");
-            DiaryTextPreview dt=new DiaryTextPreview();
-            fragmentTransaction.add(R.id.container,n,"NOTIFY");
-            fragmentTransaction.add(R.id.container,dt);
-        }
-        fragmentTransaction.commit();
+
+        dataBlockManager.readPackage();
+        if(dataBlockManager.getStringData()!=null) {
+            fragmentTransaction.add(R.id.container, new DiaryTextPreview().newInstance(dataBlockManager.getStringData(), dataBlockManager.printableDate()), "preview");
+            fragmentTransaction.commit();
+        }else
+            onDiaryPreviewInteraction(DiaryTextPreview.NOTIFY_POPUP);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                onDiaryEdit(dataBlockManager);
             }
         });
     }
@@ -78,17 +74,43 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
 
     /** Event Listeners **/
-    public void onNotifyInteraction(int action){
+    /**
+     * Event Listener for Notifications fragment
+     * @param action the action code
+     */
+    public void onNotifyInteraction(String action){
         switch (action){
             case NotifyTasks.CLOSE:
-                getFragmentManager().beginTransaction().remove(n).commit();
+                if(notificationStatus) {
+                    getFragmentManager().beginTransaction().remove(notifyTasks).commit();
+                    notificationStatus = false;
+                }
                 break;
-            case NotifyTasks.EDITOR:Intent i=new Intent(this,Editor.class);
+            case NotifyTasks.EDITOR:
+                Intent i=new Intent(this,Editor.class);
+                i.putExtra(Editor.EDITOR_MODE, Editor.EDITOR_MODE_ADD);
                 startActivity(i);
                 break;
         }
     }
-    public void onDiaryPreviewInteraction(){
+
+    public void onDiaryEdit(DataBlockManager dataBlockManager){
+        Intent intent=new Intent(this,Editor.class);
+        intent.putExtra(Editor.EDITOR_MODE, Editor.EDITOR_MODE_UPDATE);
+        intent.putExtra(Editor.EDITOR_INIT_DAYS,dataBlockManager.getDay());
+        startActivity(intent);
+    }
+    public void onDiaryPreviewInteraction(int action){
+        switch (action){
+            case  DiaryTextPreview.NOTIFY_POPUP:
+                if(!notificationStatus) {
+                    notifyTasks = NotifyTasks.newInstance("Add your biography", NotifyTasks.ACTION_EDITOR);
+                    fragmentTransaction.add(R.id.container, notifyTasks, "NOTIFY");
+                    notificationStatus = true;
+                }
+                break;
+        }
+        fragmentTransaction.commit();
 
     }
 

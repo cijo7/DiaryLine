@@ -82,4 +82,6 @@
     <!-- Editor    -->
             <string name="title_activity_editor">Editor</string>
             <string name="editor_button_1">Done</string>
+    <string name="title_activity_ipipip">ipipip</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

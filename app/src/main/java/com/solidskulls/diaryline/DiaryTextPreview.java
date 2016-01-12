@@ -1,16 +1,12 @@
 package com.solidskulls.diaryline;
 
 import android.app.Activity;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**
@@ -23,32 +19,34 @@ import android.widget.Toast;
  */
 public class DiaryTextPreview extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_DATE = "param1";
+    private static final String ARG_DATE = "date";
+    private static final String ARG_TEXT="text";
 
-    // TODO: Rename and change types of parameters
+    static final int NOTIFY_POPUP=5;
+
     private String mDate;
     private String mText;
+
     private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @para param1 Parameter 1.
+     * @param text The text to display.
+     * @param date The display date string .
      * @return A new instance of fragment DiaryTextPreview.
      */
-    // TODO: Rename and change types and number of parameters
-    public static DiaryTextPreview newInstance() {
+    public static DiaryTextPreview newInstance(String text,String date) {
         DiaryTextPreview fragment = new DiaryTextPreview();
         Bundle args = new Bundle();
-        //args.putString(ARG_DATE, param1);
-       // args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_DATE, date);
+        args.putString(ARG_TEXT, text);
         fragment.setArguments(args);
         return fragment;
     }
 
     public DiaryTextPreview() {
-        // Required empty public constructor
     }
 
     @Override
@@ -56,7 +54,9 @@ public class DiaryTextPreview extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mDate = getArguments().getString(ARG_DATE);
+            mText=getArguments().getString(ARG_TEXT);
         }
+
     }
 
     @Override
@@ -64,17 +64,14 @@ public class DiaryTextPreview extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_diary_text, container, false);
+
     }
     @Override
     public void onStart(){
         super.onStart();
-        retrive();
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onDiaryPreviewInteraction();
+        if(getView()!=null) {
+            ((TextView) getView().findViewById(R.id.preview_Text)).setText(mText);
+            ((TextView) getView().findViewById(R.id.preview_date)).setText(mDate);
         }
     }
 
@@ -86,29 +83,6 @@ public class DiaryTextPreview extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
-    }
-    public void retrive() {
-// Retrieve student records
-        String URL = ContentManager.URL;
-        Uri uri = Uri.parse(URL);
-        try {
-            Cursor c = (new ContentManager()).query(uri, null, ContentManager.DATE + "=" + Editor.getDay(), null, ContentManager.DATE);
-
-        if(c!=null) {
-            if (c.moveToFirst()) {
-                do {
-                    mText = c.getString(c.getColumnIndex(ContentManager.TEXT));
-                } while (c.moveToNext());
-            }
-        }else
-            Log.d("Retrive","Retrive Failed");
-        }catch (IllegalArgumentException e){
-            Log.d("Retrive","We passed illegal arguments");
-        }
-        if(mText!=null){
-            TextView t=(TextView)getView().findViewById(R.id.preview_Text);
-            t.setText(mText);
         }
     }
     @Override
@@ -128,8 +102,6 @@ public class DiaryTextPreview extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onDiaryPreviewInteraction();
     }
 
 }

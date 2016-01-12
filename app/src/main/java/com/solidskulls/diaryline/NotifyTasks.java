@@ -1,8 +1,8 @@
 package com.solidskulls.diaryline;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +19,9 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class NotifyTasks extends Fragment {
-    public static final int CLOSE=0;
-    public static final int EDITOR=1;
+    public static final String CLOSE="Close";
+    public static final String EDITOR="Editor";
+    static final String ACTION_EDITOR="Editor";
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_NOTIFY_MSG = "Message";
     private static final String ARG_ACTION = "Event";
@@ -35,16 +36,16 @@ public class NotifyTasks extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param msg The message to display on notify.
+     * @param act The action to take place when clicked ok.
      * @return A new instance of fragment NotifyTasks.
      */
 
-    public static NotifyTasks newInstance(String param1, String param2) {
+    public static NotifyTasks newInstance(String msg, String act) {
         NotifyTasks fragment = new NotifyTasks();
         Bundle args = new Bundle();
-        args.putString(ARG_NOTIFY_MSG, param1);
-        args.putString(ARG_ACTION, param2);
+        args.putString(ARG_NOTIFY_MSG, msg);
+        args.putString(ARG_ACTION, act);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,9 +74,11 @@ public class NotifyTasks extends Fragment {
     public void onStart(){
         super.onStart();
 
-
-        TextView msg=(TextView)getView().findViewById(R.id.notify_message);
-        msg.setText(mNotify_Msg);
+        View v=getView();
+        if(v!=null) {
+            TextView msg = (TextView) v.findViewById(R.id.notify_message);
+            msg.setText(mNotify_Msg);
+        }
         Button later=(Button)getView().findViewById(R.id.button_later);
         Button action=(Button)getView().findViewById(R.id.button_action);
         later.setOnClickListener(new View.OnClickListener() {
@@ -84,14 +87,18 @@ public class NotifyTasks extends Fragment {
                 onButtonPressed(CLOSE);
             }
         });
-        action.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonPressed(EDITOR);
-            }
-        });
+        switch (mAction) {
+            case EDITOR:
+            action.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onButtonPressed(EDITOR);
+                }
+            });
+                break;
+        }
     }
-    public void onButtonPressed(int action) {
+    public void onButtonPressed(String action) {
         if (mListener != null) {
             mListener.onNotifyInteraction(action);
         }
@@ -125,7 +132,7 @@ public class NotifyTasks extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onNotifyInteraction(int action);
+        void onNotifyInteraction(String action);
     }
 
 }
