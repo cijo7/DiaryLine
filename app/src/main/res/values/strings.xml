@@ -69,19 +69,16 @@
                 \nDo you like to write your daily life as a journal.Then Dairy Line is a free application that let you do exactly that.\n
                 \nFeel free to leave your comments.
                 \nThanks!
-                \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
-                Ok
             </string>
     <!-- Notify Fragment -->
             <string name="notify_default_message">Please tell us how was your day?</string>
             <string name="notify_button_1">Later</string>
-            <string name="notify_button_2">Ok</string>
+            <string name="notify_button_2">OK</string>
     <!-- Preview Fragment -->
             <string name="empty">Nothing to display</string>
 
     <!-- Editor    -->
             <string name="title_activity_editor">Editor</string>
             <string name="editor_button_1">Done</string>
-    <string name="title_activity_ipipip">ipipip</string>
-    <string name="title_activity_main">MainActivity</string>
+            <string name="editor_hint">What\'s in your mind</string>
 </resources>

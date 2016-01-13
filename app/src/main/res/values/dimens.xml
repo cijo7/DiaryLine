@@ -11,4 +11,6 @@
     <dimen name="writtenTextSize">15pt</dimen>
     <dimen name="buttonTextSize">15dp</dimen>
     <dimen name="buttonPadding">0dp</dimen>
+
+    <dimen name="editor_minHeight">25pt</dimen>
 </resources>

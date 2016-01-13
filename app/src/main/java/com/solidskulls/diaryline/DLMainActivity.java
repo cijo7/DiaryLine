@@ -1,25 +1,24 @@
 package com.solidskulls.diaryline;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnFragmentInteractionListener,DiaryTextPreview.OnFragmentInteractionListener {
+    static final short RESULT_EDITOR=5;
 
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-
-    NotifyTasks notifyTasks;
     private boolean notificationStatus =false;
+    private DataBlockManager dm;
+    static int COUNT=20000;
 
-    private DataBlockManager dataBlockManager;
+    private static int mPosition=COUNT-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,49 +26,84 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dataBlockManager=new DataBlockManager();
+        dm=new DataBlockManager();
     }
     @Override
     public void onStart(){
         super.onStart();
-        fragmentManager=getFragmentManager();
-        fragmentTransaction=fragmentManager.beginTransaction();
+        ViewPager viewPager;
+        DLFragmentPageAdapter dlFragmentPageAdapter;
+        viewPager=(ViewPager)findViewById(R.id.viewPager);
+        dlFragmentPageAdapter=new DLFragmentPageAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(dlFragmentPageAdapter);
+        viewPager.setCurrentItem(mPosition);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        dataBlockManager.readPackage();
-        if(dataBlockManager.getStringData()!=null) {
-            fragmentTransaction.add(R.id.container, new DiaryTextPreview().newInstance(dataBlockManager.getStringData(), dataBlockManager.printableDate()), "preview");
-            fragmentTransaction.commit();
-        }else
-            onDiaryPreviewInteraction(DiaryTextPreview.NOTIFY_POPUP);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPosition = position;
+                //dlFragmentPageAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDiaryEdit(dataBlockManager);
+                onDiaryEdit();
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+                                                                            // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_dlmain, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onOptionsItemSelected(MenuItem item) {                   // Handle action bar item clicks here. The action bar will automatically handle clicks on
+                                                                            // the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
+                                                                            //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this,Settings.class));
         }else if(id==R.id.action_help)
             startActivity(new Intent(this,Help.class));
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,int requestResult,Intent intent){
+        switch (requestCode){
+            case RESULT_EDITOR:
+                if(requestResult== Editor.EDITOR_MODE_ADD)
+                    Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_LONG).show();
+                else if(requestResult==Editor.EDITOR_MODE_UPDATE)
+                    Toast.makeText(getBaseContext(), "Updated", Toast.LENGTH_LONG).show();
+                break;
+        }
+        super.onActivityResult(requestCode,requestResult,intent);
+    }
+
+    /**
+     * Called when diary is to be edited
+     */
+    private void onDiaryEdit(){
+        Intent intent=new Intent(this,Editor.class);
+        intent.putExtra(Editor.EDITOR_MODE, Editor.EDITOR_MODE_ADD);
+        intent.putExtra(Editor.EDITOR_INIT_MILLISECOND,(new DataBlockManager(dm.oldDaySec(dm.getMilliSeconds(),COUNT-1-mPosition))).getMilliSeconds());
+        startActivityForResult(intent, RESULT_EDITOR);
     }
 
 
@@ -80,38 +114,17 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
      */
     public void onNotifyInteraction(String action){
         switch (action){
-            case NotifyTasks.CLOSE:
+            case NotifyTasks.ACTION_CLOSE:
                 if(notificationStatus) {
-                    getFragmentManager().beginTransaction().remove(notifyTasks).commit();
                     notificationStatus = false;
                 }
                 break;
-            case NotifyTasks.EDITOR:
+            case NotifyTasks.ACTION_EDITOR:
                 Intent i=new Intent(this,Editor.class);
                 i.putExtra(Editor.EDITOR_MODE, Editor.EDITOR_MODE_ADD);
                 startActivity(i);
                 break;
         }
-    }
-
-    public void onDiaryEdit(DataBlockManager dataBlockManager){
-        Intent intent=new Intent(this,Editor.class);
-        intent.putExtra(Editor.EDITOR_MODE, Editor.EDITOR_MODE_UPDATE);
-        intent.putExtra(Editor.EDITOR_INIT_DAYS,dataBlockManager.getDay());
-        startActivity(intent);
-    }
-    public void onDiaryPreviewInteraction(int action){
-        switch (action){
-            case  DiaryTextPreview.NOTIFY_POPUP:
-                if(!notificationStatus) {
-                    notifyTasks = NotifyTasks.newInstance("Add your biography", NotifyTasks.ACTION_EDITOR);
-                    fragmentTransaction.add(R.id.container, notifyTasks, "NOTIFY");
-                    notificationStatus = true;
-                }
-                break;
-        }
-        fragmentTransaction.commit();
-
     }
 
 }

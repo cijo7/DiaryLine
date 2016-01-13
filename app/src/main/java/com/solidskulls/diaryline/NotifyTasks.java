@@ -1,8 +1,9 @@
 package com.solidskulls.diaryline;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,8 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class NotifyTasks extends Fragment {
-    public static final String CLOSE="Close";
-    public static final String EDITOR="Editor";
-    static final String ACTION_EDITOR="Editor";
+    public static final String ACTION_CLOSE ="Close";
+    public static final String ACTION_EDITOR ="Editor";
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_NOTIFY_MSG = "Message";
     private static final String ARG_ACTION = "Event";
@@ -79,24 +79,28 @@ public class NotifyTasks extends Fragment {
             TextView msg = (TextView) v.findViewById(R.id.notify_message);
             msg.setText(mNotify_Msg);
         }
-        Button later=(Button)getView().findViewById(R.id.button_later);
-        Button action=(Button)getView().findViewById(R.id.button_action);
-        later.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonPressed(CLOSE);
-            }
-        });
-        switch (mAction) {
-            case EDITOR:
-            action.setOnClickListener(new View.OnClickListener() {
+        if(getView()!=null) {
+            Button later = (Button) getView().findViewById(R.id.button_later);
+            Button action = (Button) getView().findViewById(R.id.button_action);
+
+            later.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onButtonPressed(EDITOR);
+                    onButtonPressed(ACTION_CLOSE);
                 }
             });
-                break;
-        }
+            switch (mAction) {
+                case ACTION_EDITOR:
+                    action.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onButtonPressed(ACTION_EDITOR);
+                        }
+                    });
+                    break;
+            }
+        }else
+            Log.d("Notify", "Unable to set Events Listeners");
     }
     public void onButtonPressed(String action) {
         if (mListener != null) {

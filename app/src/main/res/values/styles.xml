@@ -19,7 +19,7 @@
         <item name="android:typeface">monospace</item>
         <item name="android:textColor">@color/writtenTextColor</item>
     </style>
-    <style name="punkyButton">
+    <style name="funkyButton">
         <item name="android:textColor">@color/buttonTextColor</item>
         <item name="android:background">@color/buttonBGColor</item>
         <item name="android:textSize">@dimen/buttonTextSize</item>
