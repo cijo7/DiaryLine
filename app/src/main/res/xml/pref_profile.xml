@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Name-->
+    <EditTextPreference
+        android:key="@string/pref_profile_name"
+        android:title="@string/pref_profile_name_title"
+        android:hint="@string/pref_profile_name_hint"
+        android:defaultValue=""
+        android:inputType="textCapWords"
+        android:maxLines="1"
+        />
+    <!-- Password -->
+    <SwitchPreference
+        android:key="@string/pref_profile_password_on"
+        android:title="@string/pref_profile_password_on_title"
+        android:defaultValue="false"
+        />
+    <EditTextPreference
+        android:key="@string/pref_profile_password"
+        android:title="@string/pref_profile_password_title"
+        android:inputType="numberPassword"
+        android:password="true"
+        android:dependency="@string/pref_profile_password_on"
+        android:defaultValue="1234"
+        />
+    <!-- Sign -->
+    <SwitchPreference
+        android:key="@string/pref_profile_signature_on"
+        android:title="@string/pref_profile_signature_on_title"
+        android:defaultValue="true"
+        />
+    <Preference
+        android:key="@string/pref_profile_signature"
+        android:title="@string/pref_profile_signature_title"
+        android:defaultValue="@string/pref_profile_signature_on"
+        android:dependency="@string/pref_profile_signature_on"
+        />
+    </PreferenceScreen>

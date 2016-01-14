@@ -13,4 +13,7 @@
     <dimen name="buttonPadding">0dp</dimen>
 
     <dimen name="editor_minHeight">25pt</dimen>
+
+    <!--pref -->
+    <dimen name="timePicker_text_padding">10dp</dimen>
 </resources>

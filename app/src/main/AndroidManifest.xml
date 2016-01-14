@@ -52,6 +52,8 @@
             android:exported="false" >
         </provider>
 
+        <activity android:name=".SignatureMaker" >
+        </activity>
     </application>
 
 </manifest>

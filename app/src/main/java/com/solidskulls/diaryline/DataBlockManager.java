@@ -29,7 +29,6 @@ public class DataBlockManager {
         Date date=new Date();
         tMilliSeconds=date.getTime();
         mDate=SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG).format(date.getTime());
-        Log.d("Time", mDate);
 
         tDays=(int)(tMilliSeconds/(1000*60*60*24));
         string=null;
