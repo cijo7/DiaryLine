@@ -113,8 +113,8 @@ public class TimePickerPreference extends DialogPreference{
             mMinutes= mNumberPickerMinutes.getValue();
             mAM=mMeridian.getValue()==0;
             mTime=String.format("%02d",mHour) + ":" + String.format("%02d",mMinutes)+" "+(mAM?"AM":"PM");
-            callChangeListener(mTime);
             persistString(mTime);
+            callChangeListener(mTime);
         }else{
             mHour=getHour(mTime);
             mMinutes=getMinutes(mTime);

@@ -1,15 +1,20 @@
 package com.solidskulls.diaryline;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnFragmentInteractionListener,DiaryTextPreview.OnFragmentInteractionListener {
     static final short RESULT_EDITOR=5;
@@ -62,6 +67,13 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
                 onDiaryEdit();
             }
         });
+
+        Intent intent=new Intent(this,LauncherTaskBG.class);
+        intent.putExtra(LauncherTaskBG.MESSAGE, LauncherTaskBG.SKIP);
+        PendingIntent pendingIntent= PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis()+5*1000,pendingIntent);
+        Log.d("Alarm", "Set");
     }
 
     @Override
@@ -102,7 +114,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     private void onDiaryEdit(){
         Intent intent=new Intent(this,Editor.class);
         intent.putExtra(Editor.EDITOR_MODE, Editor.EDITOR_MODE_ADD);
-        intent.putExtra(Editor.EDITOR_INIT_MILLISECOND,(new DataBlockManager(dm.oldDaySec(dm.getMilliSeconds(),COUNT-1-mPosition))).getMilliSeconds());
+        intent.putExtra(Editor.EDITOR_INIT_OFFSET_DAYS, COUNT - 1 - mPosition);
         startActivityForResult(intent, RESULT_EDITOR);
     }
 

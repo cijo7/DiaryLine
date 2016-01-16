@@ -100,4 +100,11 @@
     <string name="title_activity_editor">Editor</string>
     <string name="editor_button_1">Done</string>
     <string name="editor_hint">What\'s in your mind</string>
+
+    <string name="push_helper_notification_title_template">Push helper: %1$s</string>
+
+
+
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
 </resources>

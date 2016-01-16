@@ -35,6 +35,7 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class Settings extends AppCompatPreferenceActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +132,10 @@ public class Settings extends AppCompatPreferenceActivity {
                     }
                 }
 
-            } else {
+            }else if(preference instanceof TimePickerPreference){
+                LauncherTaskBG.setAlarm(preference.getContext());
+                preference.setSummary(stringValue);
+            }else {
                                                                                                     // For all other preferences, set the summary to the value's simple string
                                                                                                     // representation.
                 preference.setSummary(stringValue);

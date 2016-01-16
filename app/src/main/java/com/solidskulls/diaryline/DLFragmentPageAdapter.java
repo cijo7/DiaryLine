@@ -6,17 +6,17 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Created by cijo-saju on 12/1/16.
+ *
  */
 public class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
-    private DataBlockManager  tmp,dataBlockManager;
+    private DataBlockManager  dataBlockManager;
     public DLFragmentPageAdapter(FragmentManager fm) {
         super(fm);
-        tmp=new DataBlockManager();
     }
 
     @Override
     public Fragment getItem(int position) {
-        dataBlockManager=new DataBlockManager(tmp.oldDaySec(tmp.getMilliSeconds(),DLMainActivity.COUNT-1-position));
+        dataBlockManager=new DataBlockManager(DLMainActivity.COUNT - 1 - position);
         dataBlockManager.readPackage();
         String str=dataBlockManager.getStringData();
         if(str==null) {

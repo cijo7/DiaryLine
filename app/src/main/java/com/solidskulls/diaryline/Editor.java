@@ -11,11 +11,11 @@ import android.widget.EditText;
 public class Editor extends AppCompatActivity {
 
     static final String EDITOR_MODE="EditorMode";
-    static final String EDITOR_INIT_MILLISECOND ="totalDays";
+    static final String EDITOR_INIT_OFFSET_DAYS ="totalDays";
     static final int EDITOR_MODE_ADD=1;
     static final int EDITOR_MODE_UPDATE=2;
     private int editorMode;
-    private long mSec;
+    private int offsetDays;
     private EditText editorText;
 
     private static DataBlockManager dataBlockManager;
@@ -27,7 +27,7 @@ public class Editor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle extras=getIntent().getExtras();
-        mSec =extras.getLong(EDITOR_INIT_MILLISECOND);
+        offsetDays =extras.getInt(EDITOR_INIT_OFFSET_DAYS);
         setContentView(R.layout.activity_editor);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -43,7 +43,7 @@ public class Editor extends AppCompatActivity {
     public void onStart(){
         super.onStart();
 
-        dataBlockManager=new DataBlockManager(mSec);
+        dataBlockManager=new DataBlockManager(offsetDays);
         if(dataBlockManager.ifExists())
             editorMode=EDITOR_MODE_UPDATE;
         else
