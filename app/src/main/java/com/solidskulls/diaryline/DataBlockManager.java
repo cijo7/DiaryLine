@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,18 +25,25 @@ public class DataBlockManager {
     private static long currentMilliSeconds;
     private static int currentTDays;
 
-    private String string;
+    private String string=null;
     private int tDays;
     private String mDate;
 
     static Uri lastUri;
+
+
+
+    //Global DATA
+
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
 
     // TODO: 14/1/16 Date change don't work properly
 
     /**
      * Creates a Heart DataBlock which is responsible for Initiating purposes.
      */
-    DataBlockManager(Context context){
+    public static void init(Context context){
         contentManager =new ContentManager();
 
         Calendar calendar=Calendar.getInstance();
@@ -46,12 +55,16 @@ public class DataBlockManager {
         calendar.setTimeInMillis(tMilliSeconds);
         currentTDays=(int)(tMilliSeconds/(1000*60*60*24));
 
-        string=null;
+        DiaryTextPreview.updateBitmap(context);//Initialise Sign Bitmap
 
-        DiaryTextPreview.updateBitmap(context);
+        DisplayMetrics metrics=new DisplayMetrics();//Findout Screen Size
+        ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
+        SCREEN_WIDTH=metrics.widthPixels;
+        SCREEN_HEIGHT=metrics.heightPixels;
 
-        mDate=SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.LONG).format(calendar.getTime());//Unnecessary
-        Timber.d("Default Date:"+currentTDays+" Days  Milliseconds:"+currentMilliSeconds+" Format after:"+mDate);
+        NavigatorView.navigatorViewInIt(SCREEN_WIDTH,SCREEN_HEIGHT);//Initialise navigation view
+
+        Timber.d("Default Date:"+currentTDays+" Days  Milliseconds:"+currentMilliSeconds);
 
     }
 

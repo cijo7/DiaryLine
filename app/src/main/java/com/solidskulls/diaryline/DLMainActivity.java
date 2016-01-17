@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -21,7 +22,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     static final short RESULT_EDITOR=5;
 
     private boolean notificationStatus =false;
-    private DataBlockManager dm;
     static int COUNT=20000;
 
     private static int mPosition=COUNT-1;
@@ -32,7 +32,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dm=new DataBlockManager(this);
+        DataBlockManager.init(this);
 
         if(BuildConfig.DEBUG)
             Timber.plant(new Timber.DebugTree());
@@ -40,6 +40,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     @Override
     public void onStart(){
         super.onStart();
+
 
        /* Intent i=new Intent(this,SignatureMaker.class);
         startActivity(i);*/
@@ -50,6 +51,9 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         dlFragmentPageAdapter=new DLFragmentPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(dlFragmentPageAdapter);
         viewPager.setCurrentItem(mPosition);
+        viewPager.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
+        ViewGroup.LayoutParams l=viewPager.getLayoutParams();
+        l.height= ViewGroup.LayoutParams.WRAP_CONTENT;
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -67,7 +71,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
             }
         });
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +106,12 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Handles the result of the activity.
+     * @param requestCode the request code to intent
+     * @param requestResult request result code
+     * @param intent intent passed back
+     */
     @Override
     public void onActivityResult(int requestCode,int requestResult,Intent intent){
         switch (requestCode){
@@ -135,11 +144,11 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     public void onNotifyInteraction(String action){
         switch (action){
             case NotifyTasks.ACTION_CLOSE:
-                if(notificationStatus) {
+                if(notificationStatus) {//Some notification is there, then close it.
                     notificationStatus = false;
                 }
                 break;
-            case NotifyTasks.ACTION_EDITOR:
+            case NotifyTasks.ACTION_EDITOR://If choose editor open editor
                 Intent i=new Intent(this,Editor.class);
                 i.putExtra(Editor.EDITOR_MODE, Editor.EDITOR_MODE_ADD);
                 startActivity(i);

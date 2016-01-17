@@ -19,9 +19,6 @@ public class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
         dataBlockManager=new DataBlockManager(DLMainActivity.COUNT - 1 - position);
         dataBlockManager.readPackage();
         String str=dataBlockManager.getStringData();
-        if(str==null) {
-            str = "Nothing to display";
-        }
         return DiaryTextPreview.newInstance(str,dataBlockManager.printableDate());
     }
 

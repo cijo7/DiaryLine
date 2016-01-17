@@ -17,33 +17,26 @@
 
 <!-- The Fragments-->
 
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="?attr/actionBarSize"
-    android:id="@+id/container"
-    >
 
 
 
-    </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/dataContainer"
-        android:paddingTop="?attr/actionBarSize"
-        android:orientation="vertical">
+        android:paddingTop="?attr/actionBarSize">
         <com.solidskulls.diaryline.NavigatorView
             android:layout_width="match_parent"
-            android:layout_height="117dp"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/navigator_view"/>
 
         <android.support.v4.view.ViewPager
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@id/navigator_view"
             android:id="@+id/viewPager"/>
 
-    </LinearLayout>
+    </RelativeLayout>
     <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"

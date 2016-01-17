@@ -2,10 +2,8 @@ package com.solidskulls.diaryline;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -16,18 +14,16 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import timber.log.Timber;
 
 public class SignatureMaker extends AppCompatActivity {
 
     private SignatureDrawHelper signatureDrawHelper;
-    Bitmap bitmap;
+    private static Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +74,11 @@ public class SignatureMaker extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             Timber.d(e,"File not found");
         }
+
         try {
-            file.close();
+            if (file != null) {
+                file.close();
+            }
         } catch (IOException e) {
             Timber.d(e,"File not closed");
         }
@@ -88,7 +87,7 @@ public class SignatureMaker extends AppCompatActivity {
 
 
 
-    private class SignatureDrawHelper extends View {
+    public static class SignatureDrawHelper extends View {
         private Paint mPaint;
         private Paint dotPaint;
         private Path mPath,dotPath;

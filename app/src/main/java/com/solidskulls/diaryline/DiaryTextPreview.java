@@ -36,7 +36,7 @@ public class DiaryTextPreview extends Fragment {
     static final int NOTIFY_POPUP=5;
 
     private String mDate;
-    private String mText;
+    private String mText=null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -80,7 +80,8 @@ public class DiaryTextPreview extends Fragment {
         }
 
         try {
-            fileInputStream.close();
+            if(fileInputStream!=null)
+                fileInputStream.close();
         } catch (IOException e) {
             Timber.d(e,"Bitmap File close failed");
         }
@@ -99,10 +100,16 @@ public class DiaryTextPreview extends Fragment {
         super.onStart();
         View view=getView();
         if(view!=null) {
-            ((TextView) view.findViewById(R.id.preview_Text)).setText(mText);
+            if(mText!=null) {
+                ((TextView) view.findViewById(R.id.preview_Text)).setText(mText);
+                if (signBitMap!=null)
+                    ((ImageView)view.findViewById(R.id.imageView_sign)).setImageBitmap(signBitMap);
+            }
+            else {
+                ( view.findViewById(R.id.blankIcon)).setVisibility(View.VISIBLE);
+                (view.findViewById(R.id.blankIconText)).setVisibility(View.VISIBLE);
+            }
             ((TextView) view.findViewById(R.id.preview_date)).setText(mDate);
-            if (signBitMap!=null)
-                ((ImageView)view.findViewById(R.id.imageView_sign)).setImageBitmap(signBitMap);
         }
     }
 
