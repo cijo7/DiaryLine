@@ -10,16 +10,17 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
-import android.util.Log;
 
 import java.util.Calendar;
+
+import timber.log.Timber;
 
 public class LauncherTaskBG extends BroadcastReceiver {
     static String MESSAGE ="WhatToDo";
     static boolean SKIP=true;
     @Override
     public void onReceive(Context context,Intent intent){
-        Log.d("Broadcast","We are in broadcast it!");
+        Timber.d("We are in broadcast it!");
         Bundle e=intent.getExtras();
         boolean t=e.getBoolean(MESSAGE);
         if(t) {
@@ -42,7 +43,7 @@ public class LauncherTaskBG extends BroadcastReceiver {
         if(sharedPreferences.getBoolean(resources.getString(R.string.pref_notification_on),true)) {    //Create new One only when notifications enabled
             String time=sharedPreferences.getString(resources.getString(R.string.pref_notification_timer),resources.getString(R.string.pref_notifications_timer_value));
             if(time.equals("")) {
-                Log.d("Broadcast","Empty time");
+                Timber.d("Empty time");
                 return;
             }
             Intent intentT = new Intent(context, LauncherTaskBG.class);
@@ -50,7 +51,7 @@ public class LauncherTaskBG extends BroadcastReceiver {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intentT, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, getOffsetToTimer(time), pendingIntent);
-            Log.d("Broadcast", "Set alarm on " + DateUtils.formatDateTime(context,getOffsetToTimer(time),DateUtils.FORMAT_SHOW_TIME|DateUtils.FORMAT_SHOW_DATE));
+            Timber.d( "Set alarm on " + DateUtils.formatDateTime(context,getOffsetToTimer(time),DateUtils.FORMAT_SHOW_TIME|DateUtils.FORMAT_SHOW_DATE));
         }
     }
 
@@ -73,7 +74,7 @@ public class LauncherTaskBG extends BroadcastReceiver {
 
             return calendar.getTimeInMillis();
         }catch (Exception e){
-            Log.d("Broadcast","Unable to parse timer",e);
+            Timber.d(e,"Unable to parse timer");
         }
         return  Calendar.getInstance().getTimeInMillis()+24*60*60*1000+1000*60*5;
     }

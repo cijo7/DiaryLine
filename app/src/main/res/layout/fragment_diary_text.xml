@@ -1,25 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_height="match_parent" tools:context="com.solidskulls.diaryline.DiaryTextPreview">
+    android:layout_height="match_parent" tools:context="com.solidskulls.diaryline.DiaryTextPreview"
+    android:weightSum="1">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/preview_date"
         android:padding="20dp"
         android:text="@string/empty"
-        android:layout_gravity="center"/>
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:id="@+id/preview_Text"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:padding="@dimen/content_padding"
-        android:text="@string/empty" />
-    </ScrollView>
+        android:text="@string/empty"
+        android:layout_below="@id/preview_date"
+        android:scrollbars="vertical"/>
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_gravity="start"
+        android:layout_below="@id/preview_Text"
+        android:id="@+id/imageView_sign"
+        android:contentDescription="@string/author_sign"/>
 
 
-
-</LinearLayout>
+</RelativeLayout>

@@ -3,12 +3,13 @@ package com.solidskulls.diaryline;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import timber.log.Timber;
 
 
 /**
@@ -100,7 +101,7 @@ public class NotifyTasks extends Fragment {
                     break;
             }
         }else
-            Log.d("Notify", "Unable to set Events Listeners");
+            Timber.d( "Unable to set Events Listeners");
     }
     public void onButtonPressed(String action) {
         if (mListener != null) {

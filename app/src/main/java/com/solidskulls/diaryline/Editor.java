@@ -3,10 +3,11 @@ package com.solidskulls.diaryline;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+
+import timber.log.Timber;
 
 public class Editor extends AppCompatActivity {
 
@@ -78,21 +79,21 @@ public class Editor extends AppCompatActivity {
         switch (editorMode){
             case EDITOR_MODE_ADD:
                 if(dataBlockManager.addPackage(editorText.getText().toString())) {
-                    Log.d("Editor", "Uri:" + DataBlockManager.lastUri);
+                    Timber.d( "Uri:" + DataBlockManager.lastUri);
                     setResult(EDITOR_MODE_ADD);
                     finish();
                 }else
-                    Log.d("Editor","Add Failed");
+                    Timber.d("Add Failed");
                 break;
             case EDITOR_MODE_UPDATE:
                 if(dataBlockManager.updatePackage(editorText.getText().toString())){
                     setResult(EDITOR_MODE_UPDATE);
                     finish();
                 }else
-                    Log.d("Editor","Update Failed");
+                    Timber.d("Update Failed");
                 break;
             default:
-                Log.d("Editor","Invalid Mode");
+                Timber.d("Invalid Mode");
                 break;
         }
     }

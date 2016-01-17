@@ -31,7 +31,9 @@
     <Preference
         android:key="@string/pref_profile_signature"
         android:title="@string/pref_profile_signature_title"
-        android:defaultValue="@string/pref_profile_signature_on"
-        android:dependency="@string/pref_profile_signature_on"
-        />
+        android:dependency="@string/pref_profile_signature_on">
+        <intent
+            android:targetPackage="com.solidskulls.diaryline"
+            android:targetClass="com.solidskulls.diaryline.SignatureMaker"/>
+    </Preference>
     </PreferenceScreen>

@@ -1,12 +1,22 @@
 package com.solidskulls.diaryline;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import timber.log.Timber;
 
 
 /**
@@ -21,6 +31,7 @@ public class DiaryTextPreview extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_DATE = "date";
     private static final String ARG_TEXT="text";
+    private static Bitmap signBitMap=null;
 
     static final int NOTIFY_POPUP=5;
 
@@ -59,6 +70,23 @@ public class DiaryTextPreview extends Fragment {
 
     }
 
+    public static boolean updateBitmap(Context context){
+        FileInputStream fileInputStream=null;
+        try {
+            fileInputStream = context.openFileInput("sign.png");
+            signBitMap= BitmapFactory.decodeStream(fileInputStream);
+        }catch (FileNotFoundException e){
+            Timber.d(e,"Bit map File not found");
+        }
+
+        try {
+            fileInputStream.close();
+        } catch (IOException e) {
+            Timber.d(e,"Bitmap File close failed");
+        }
+        return signBitMap!=null;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,9 +97,12 @@ public class DiaryTextPreview extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        if(getView()!=null) {
-            ((TextView) getView().findViewById(R.id.preview_Text)).setText(mText);
-            ((TextView) getView().findViewById(R.id.preview_date)).setText(mDate);
+        View view=getView();
+        if(view!=null) {
+            ((TextView) view.findViewById(R.id.preview_Text)).setText(mText);
+            ((TextView) view.findViewById(R.id.preview_date)).setText(mDate);
+            if (signBitMap!=null)
+                ((ImageView)view.findViewById(R.id.imageView_sign)).setImageBitmap(signBitMap);
         }
     }
 

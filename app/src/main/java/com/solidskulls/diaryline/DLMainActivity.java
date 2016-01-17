@@ -8,13 +8,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.Calendar;
+
+import timber.log.Timber;
 
 public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnFragmentInteractionListener,DiaryTextPreview.OnFragmentInteractionListener {
     static final short RESULT_EDITOR=5;
@@ -31,11 +32,18 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dm=new DataBlockManager();
+        dm=new DataBlockManager(this);
+
+        if(BuildConfig.DEBUG)
+            Timber.plant(new Timber.DebugTree());
     }
     @Override
     public void onStart(){
         super.onStart();
+
+       /* Intent i=new Intent(this,SignatureMaker.class);
+        startActivity(i);*/
+
         ViewPager viewPager;
         DLFragmentPageAdapter dlFragmentPageAdapter;
         viewPager=(ViewPager)findViewById(R.id.viewPager);
@@ -73,7 +81,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         PendingIntent pendingIntent= PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis()+5*1000,pendingIntent);
-        Log.d("Alarm", "Set");
+        Timber.d("Alarm Set");
     }
 
     @Override

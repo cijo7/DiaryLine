@@ -78,7 +78,6 @@ public class PushNotificationHelper {
                         // should set the relevant time information using the setWhen
                         // method below. If this call is omitted, the notification's
                         // timestamp will by set to the time at which it was shown.
-                        // TODO: Call setWhen if this notification relates to a past or
                         // upcoming event. The sole argument to this method should be
                         // the notification timestamp in milliseconds.
                         //.setWhen(...)

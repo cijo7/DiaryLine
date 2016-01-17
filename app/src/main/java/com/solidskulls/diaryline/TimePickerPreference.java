@@ -6,14 +6,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
+
+import timber.log.Timber;
 
 /**
  * Created by cijo-saju on 13/1/16.
  * Class used as a Settings TimePicker
- * //todo implement 12 hour Clock also
  */
 public class TimePickerPreference extends DialogPreference{
     static int MAX_HOUR =12;
@@ -163,7 +163,7 @@ public class TimePickerPreference extends DialogPreference{
         try {
             return Integer.parseInt(string.split("[: ]")[1]);
         }catch (Exception e){
-            Log.d("Timer","Unable to parse int.",e);
+            Timber.d(e,"Unable to parse int.");
         }
         return 0;
     }
@@ -173,9 +173,9 @@ public class TimePickerPreference extends DialogPreference{
             String str= string.split("[: ]")[2];
             return str.equals("AM")||str.equals("am");
         }catch (NullPointerException e){
-            Log.d("Timer","No Meridian Given. We got Null.");
+            Timber.d("No Meridian Given. We got Null.");
         }
-        Log.d("Timer","Invalid Meridian. Returning dummy");
+        Timber.d("Invalid Meridian. Returning dummy");
         return false;
     }
 

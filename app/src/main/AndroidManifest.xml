@@ -54,7 +54,8 @@
             android:exported="false" >
         </provider>
 
-        <activity android:name=".SignatureMaker" >
+        <activity android:name=".SignatureMaker"
+            android:screenOrientation="landscape">
         </activity>
 
         <receiver

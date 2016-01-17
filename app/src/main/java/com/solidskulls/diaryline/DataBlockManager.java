@@ -1,15 +1,17 @@
 package com.solidskulls.diaryline;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import timber.log.Timber;
 
 /**
  * Created by cijo-saju on 12/1/16.
@@ -32,22 +34,24 @@ public class DataBlockManager {
     /**
      * Creates a Heart DataBlock which is responsible for Initiating purposes.
      */
-    DataBlockManager(){
+    DataBlockManager(Context context){
         contentManager =new ContentManager();
 
         Calendar calendar=Calendar.getInstance();
         currentMilliSeconds=calendar.getTimeInMillis();
 
-        Log.d("DataBlock",SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.LONG).format(calendar.getTime())+" Before");
-
+        Timber.d(SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.LONG).format(calendar.getTime()) + " Before");
+//// FIXME: 16/1/16 Bug when used in Daylight saving time.
         long tMilliSeconds=calendar.getTimeInMillis()+TimeZone.getDefault().getRawOffset();
         calendar.setTimeInMillis(tMilliSeconds);
         currentTDays=(int)(tMilliSeconds/(1000*60*60*24));
 
         string=null;
 
+        DiaryTextPreview.updateBitmap(context);
+
         mDate=SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.LONG, SimpleDateFormat.LONG).format(calendar.getTime());//Unnecessary
-        Log.d("Default Date:",currentTDays+" Days  Milliseconds:"+currentMilliSeconds+" Format after:"+mDate);
+        Timber.d("Default Date:"+currentTDays+" Days  Milliseconds:"+currentMilliSeconds+" Format after:"+mDate);
 
     }
 
@@ -62,7 +66,7 @@ public class DataBlockManager {
         mDate=SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG).format(date.getTime());
 
         tDays=currentTDays-offsetDays;
-        Log.d("Date",tDays+" Day");
+        Timber.d(tDays+" Day");
         string=null;
     }
 
@@ -76,7 +80,7 @@ public class DataBlockManager {
         try {
             lastUri = contentManager.insert(ContentManager.CONTENT_URI, values);
         }catch (SQLException e){
-            Log.d("DBM Add","Unable to insert data to DB.");
+            Timber.d(e, "Unable to insert data to DB.");
         }
         return lastUri != null;
     }
@@ -88,10 +92,10 @@ public class DataBlockManager {
         try {
             res = contentManager.update(ContentManager.CONTENT_URI, values, ContentManager.DATE + "=" + tDays, null);
         }catch (SQLException e){
-            Log.d("DBM Update","Unable to update data to DB.");
+            Timber.d("Unable to update data to DB.");
         }
         if(res==0)
-            Log.d("DBM Update","Unable to update record");
+            Timber.d("Unable to update record");
         return  res!=0;
     }
 
@@ -115,9 +119,9 @@ public class DataBlockManager {
                     c.close();
                 }
             }else
-                Log.d("DBM Read","Retrieve Failed");
+                Timber.d("Retrieve Failed");
         }catch (IllegalArgumentException e){
-            Log.d("DBM Read","We passed illegal arguments");
+            Timber.d("We passed illegal arguments");
         }
         return status;
     }
@@ -138,9 +142,9 @@ public class DataBlockManager {
                     c.close();
                 }
             }else
-                Log.d("DBM Read","Retrieve Failed");
+                Timber.d("Retrieve Failed");
         }catch (IllegalArgumentException e){
-            Log.d("DBM Read","We passed illegal arguments");
+            Timber.d("We passed illegal arguments");
         }
         return status;
     }
