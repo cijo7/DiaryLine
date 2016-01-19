@@ -29,13 +29,13 @@ import timber.log.Timber;
  */
 public class DiaryTextPreview extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_DATE = "date";
-    private static final String ARG_TEXT="text";
+    private static final String ARG_POSITION = "position";
     private static Bitmap signBitMap=null;
 
     static final int NOTIFY_POPUP=5;
 
-    private String mDate;
+    private DataBlockManager dataBlockManager;
+    private int mOffsetDays,mPosition;
     private String mText=null;
 
     private OnFragmentInteractionListener mListener;
@@ -44,15 +44,13 @@ public class DiaryTextPreview extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param text The text to display.
-     * @param date The display date string .
+     * @param offset The number of days offset. .
      * @return A new instance of fragment DiaryTextPreview.
      */
-    public static DiaryTextPreview newInstance(String text,String date) {
+    public static DiaryTextPreview newInstance(int offset) {
         DiaryTextPreview fragment = new DiaryTextPreview();
         Bundle args = new Bundle();
-        args.putString(ARG_DATE, date);
-        args.putString(ARG_TEXT, text);
+        args.putInt(ARG_POSITION, offset);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,33 +62,11 @@ public class DiaryTextPreview extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mDate = getArguments().getString(ARG_DATE);
-            mText=getArguments().getString(ARG_TEXT);
+            mPosition = getArguments().getInt(ARG_POSITION);
         }
-
-    }
-
-    public static boolean updateBitmap(Context context){
-        FileInputStream fileInputStream=null;
-        try {
-            fileInputStream = context.openFileInput("sign.png");
-            signBitMap= BitmapFactory.decodeStream(fileInputStream);
-        }catch (FileNotFoundException e){
-            Timber.d(e,"Bit map File not found");
-            signBitMap=null;
-        }
-
-        try {
-            if(fileInputStream!=null)
-                fileInputStream.close();
-        } catch (IOException e) {
-            Timber.d(e,"Bitmap File close failed");
-        }
-        return signBitMap!=null;
-    }
-    public static void recycleBitmap(){
-        if(signBitMap!=null)
-            signBitMap.recycle();
+        dataBlockManager=new DataBlockManager(mOffsetDays=(DLMainActivity.COUNT-1-mPosition));
+        dataBlockManager.readPackage();
+        mText=dataBlockManager.getStringData();
     }
 
     @Override
@@ -114,7 +90,6 @@ public class DiaryTextPreview extends Fragment {
                 ( view.findViewById(R.id.blankIcon)).setVisibility(View.VISIBLE);
                 (view.findViewById(R.id.blankIconText)).setVisibility(View.VISIBLE);
             }
-            ((TextView) view.findViewById(R.id.preview_date)).setText(mDate);
         }
     }
 
@@ -135,16 +110,33 @@ public class DiaryTextPreview extends Fragment {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * The interface to Activity
      */
     public interface OnFragmentInteractionListener {
+
     }
 
+
+    public static boolean updateBitmap(Context context){
+        FileInputStream fileInputStream=null;
+        try {
+            fileInputStream = context.openFileInput("sign.png");
+            signBitMap= BitmapFactory.decodeStream(fileInputStream);
+        }catch (FileNotFoundException e){
+            Timber.d(e,"Bit map File not found");
+            signBitMap=null;
+        }
+
+        try {
+            if(fileInputStream!=null)
+                fileInputStream.close();
+        } catch (IOException e) {
+            Timber.d(e,"Bitmap File close failed");
+        }
+        return signBitMap!=null;
+    }
+    public static void recycleBitmap(){
+        if(signBitMap!=null)
+            signBitMap.recycle();
+    }
 }

@@ -17,10 +17,7 @@ public class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        dataBlockManager=new DataBlockManager(DLMainActivity.COUNT - 1 - position);
-        dataBlockManager.readPackage();
-        String str=dataBlockManager.getStringData();
-        return (DiaryTextPreview.newInstance(str,dataBlockManager.printableDate()));
+        return DiaryTextPreview.newInstance(position);
     }
 
     @Override

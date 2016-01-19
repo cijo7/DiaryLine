@@ -1,7 +1,5 @@
 package com.solidskulls.diaryline;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,26 +10,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
-import java.util.Random;
-import java.util.logging.Handler;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import timber.log.Timber;
 
 public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnFragmentInteractionListener,DiaryTextPreview.OnFragmentInteractionListener {
-    static final short RESULT_EDITOR=5;
 
-    private boolean notificationStatus =false;
+    private boolean mNotificationStatus =false;
     static int COUNT=20000;
     NavigatorView navigatorView;
     private ViewPager viewPager;
     private DLFragmentPageAdapter dlFragmentPageAdapter;
 
     private static int mPosition=COUNT-1;
-    private boolean positionChanged=true;
-    private Coordinator mCoordinator;
+    private static int NAV_STRING_COUNT =6;
+    private boolean mSwipeRight=true;
+    private long shownMilliSec;
+    private SimpleDateFormat simpleDateFormat,simpleDate;
+    private Date mDateSetter;
+    public Coordinator mCoordinator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,24 +46,24 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
         DataBlockManager.init(this);
 
-
-
         viewPager=(ViewPager)findViewById(R.id.viewPager);
         navigatorView=(NavigatorView)findViewById(R.id.navigator_view);
-
         dlFragmentPageAdapter=new DLFragmentPageAdapter(getSupportFragmentManager());
 
-
+        mCoordinator=new Coordinator();
     }
     @Override
     public void onStart(){
         super.onStart();
 
 
-       /* Intent i=new Intent(this,SignatureMaker.class);
-        startActivity(i);*/
-
         navigatorView.navigatorViewInIt(DataBlockManager.SCREEN_WIDTH, DataBlockManager.SCREEN_HEIGHT);//Initialise navigation view
+
+        mDateSetter =new Date();
+        simpleDateFormat=new SimpleDateFormat("dd", Locale.getDefault());
+        simpleDate=new SimpleDateFormat("MMMM yyyy",Locale.getDefault());
+        setNavigationData(DataBlockManager.getCurrentMilliseconds()-((long)(COUNT-mPosition-1))*24*60*60*1000);
+
         viewPager.setAdapter(dlFragmentPageAdapter);
         viewPager.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
         ViewGroup.LayoutParams l=viewPager.getLayoutParams();
@@ -75,14 +76,17 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
             @Override
             public void onPageSelected(int position) {
-                if (mPosition > position)                  //Left
+                if (mPosition > position) {                                         //Swipe Right
+                    mSwipeRight = true;
+                    updateNavData();
                     navigatorView.updateNavigatorAnimation(true);
-                else if (mPosition < position)                                    //Right
+                }else if (mPosition < position) {                                   //Swipe Left
+                    mSwipeRight=false;
+                    updateNavData();
                     navigatorView.updateNavigatorAnimation(false);
-
+                }
 
                 mPosition = position;
-                positionChanged = true;
                 //dlFragmentPageAdapter.notifyDataSetChanged();
             }
 
@@ -100,7 +104,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
                 onDiaryEdit();
             }
         });
-        mCoordinator=new Coordinator();
 
         /*Intent intent=new Intent(this,LauncherTaskBG.class);
         intent.putExtra(LauncherTaskBG.MESSAGE, LauncherTaskBG.SKIP);
@@ -137,14 +140,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
      */
     @Override
     public void onActivityResult(int requestCode,int requestResult,Intent intent){
-        switch (requestCode){
-            case RESULT_EDITOR:
-                if(requestResult== Editor.EDITOR_MODE_ADD)
-                    Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_LONG).show();
-                else if(requestResult==Editor.EDITOR_MODE_UPDATE)
-                    Toast.makeText(getBaseContext(), "Updated", Toast.LENGTH_LONG).show();
-                break;
-        }
         super.onActivityResult(requestCode,requestResult,intent);
     }
 
@@ -160,6 +155,43 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     protected void onDestroy() {
         super.onDestroy();
         DiaryTextPreview.recycleBitmap();//Recycle the static bitmap. Just in case.
+    }
+
+    /**
+     * Initialises Navigator View with default data.
+     * @param milliSec Set display date in millisecond
+     */
+    private void setNavigationData(long milliSec){
+        shownMilliSec=milliSec;
+        milliSec+=(long)(((float)NAV_STRING_COUNT /2)-1)*24*60*60*1000;
+        mDateSetter.setTime(milliSec);
+
+        String[] days=new String[NAV_STRING_COUNT];
+        days[0]="";
+        //Puts the string to format {null,17,18,19,20,21}
+        for(int i=NAV_STRING_COUNT-1;i>0;i--){
+            days[i]=simpleDateFormat.format(mDateSetter);
+            milliSec-=24*60*60*1000;
+            mDateSetter.setTime(milliSec);
+        }
+        navigatorView.circularArrayString.refresh(days);
+
+        mDateSetter.setTime(shownMilliSec);
+        navigatorView.updateMonth(simpleDate.format(mDateSetter));
+    }
+
+    private void updateNavData(){
+        if(mSwipeRight){
+            mDateSetter.setTime(shownMilliSec-(NAV_STRING_COUNT/2)*24*60*60*1000);
+            navigatorView.circularArrayString.update(simpleDateFormat.format(mDateSetter));
+            shownMilliSec-=24*60*60*1000;
+        }else {
+            mDateSetter.setTime(shownMilliSec+(NAV_STRING_COUNT/2)*24*60*60*1000);
+            navigatorView.circularArrayString.update(simpleDateFormat.format(mDateSetter));
+            shownMilliSec+=24*60*60*1000;
+        }
+        mDateSetter.setTime(shownMilliSec);
+        navigatorView.updateMonth(simpleDate.format(mDateSetter));
     }
 
     /**
@@ -181,8 +213,8 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     public void onNotifyInteraction(String action){
         switch (action){
             case NotifyTasks.ACTION_CLOSE:
-                if(notificationStatus) {//Some notification is there, then close it.
-                    notificationStatus = false;
+                if(mNotificationStatus) {//Some notification is there, then close it.
+                    mNotificationStatus = false;
                 }
                 break;
             case NotifyTasks.ACTION_EDITOR://If choose editor open editor
@@ -193,36 +225,36 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         }
     }
 
+
+    /**
+     * Helper class of MainActivity
+     */
     public class Coordinator implements Runnable {
         private Thread thread;
         private boolean threadActive=true;
-        Random rand;
+
         Coordinator(){
             thread=new Thread(this);
             thread.start();
         }
+
         @Override
         public void run() {
+            //Maintains date values
             while(threadActive){
                 try {
-                    while (positionChanged){
-                        rand=new Random();
-
-                        navigatorView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                navigatorView.update("hello");
-                            }
-                        });
-                        positionChanged=false;
-                    }
                     Thread.sleep(1000);
                 }catch (InterruptedException e){
-                    Timber.d(e,"Interrupted thread");
+                    Timber.d(e,"Thread has been Interrupted");
                 }
             }
         }
+
+        /**
+         * Stops the thread
+         */
         public void stop(){
+            thread.interrupt();
             threadActive=false;
         }
     }

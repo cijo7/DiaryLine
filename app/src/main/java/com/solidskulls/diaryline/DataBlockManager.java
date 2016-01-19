@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import timber.log.Timber;
@@ -27,7 +28,7 @@ public class DataBlockManager {
 
     private String string=null;
     private int tDays;
-    private String mDate;
+    private long mMilliSeconds;
 
     static Uri lastUri;
 
@@ -74,8 +75,7 @@ public class DataBlockManager {
     DataBlockManager(int offsetDays){
 
         Date date=new Date();
-        date.setTime(currentMilliSeconds-((long)offsetDays)*24*60*60*1000);//Lets offset
-        mDate=SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG).format(date.getTime());
+        date.setTime(mMilliSeconds=(currentMilliSeconds-((long)offsetDays)*24*60*60*1000));//Lets offset
 
         tDays=currentTDays-offsetDays;
         Timber.d(tDays+" Day");
@@ -169,30 +169,15 @@ public class DataBlockManager {
         return string;
     }
 
-
-    /**
-     * Get a String of date
-     * @return String of Date in format DD MM YYYY
-     */
-    public String printableDate(){
-        return mDate;
-    }
-
-    /**
-     * The number of Seconds on Previous day
-     * @param mSeconds Milliseconds
-     * @param no No of Days
-     * @return Milliseconds on old day
-     */
-    public static long oldDaySec(long mSeconds,int no){
-        return mSeconds-(1000*60*60*24)*no;
-    }
-
     /**
      * Access the current milliseconds
      * @return Milliseconds until now
      */
-    public static long getCurrentMilliSeconds(){
+    public long getMilliSeconds(){
+        return mMilliSeconds;
+    }
+
+    public static long getCurrentMilliseconds(){
         return currentMilliSeconds;
     }
 }
