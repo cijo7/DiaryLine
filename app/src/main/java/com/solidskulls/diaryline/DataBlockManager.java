@@ -57,12 +57,11 @@ public class DataBlockManager {
 
         DiaryTextPreview.updateBitmap(context);//Initialise Sign Bitmap
 
-        DisplayMetrics metrics=new DisplayMetrics();//Findout Screen Size
+        DisplayMetrics metrics=new DisplayMetrics();//Find out Screen Size
         ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
         SCREEN_WIDTH=metrics.widthPixels;
         SCREEN_HEIGHT=metrics.heightPixels;
 
-        NavigatorView.navigatorViewInIt(SCREEN_WIDTH,SCREEN_HEIGHT);//Initialise navigation view
 
         Timber.d("Default Date:"+currentTDays+" Days  Milliseconds:"+currentMilliSeconds);
 
@@ -75,7 +74,7 @@ public class DataBlockManager {
     DataBlockManager(int offsetDays){
 
         Date date=new Date();
-        date.setTime(currentMilliSeconds-offsetDays*24*60*60*1000);//Lets offset
+        date.setTime(currentMilliSeconds-((long)offsetDays)*24*60*60*1000);//Lets offset
         mDate=SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG).format(date.getTime());
 
         tDays=currentTDays-offsetDays;

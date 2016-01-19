@@ -77,6 +77,7 @@ public class DiaryTextPreview extends Fragment {
             signBitMap= BitmapFactory.decodeStream(fileInputStream);
         }catch (FileNotFoundException e){
             Timber.d(e,"Bit map File not found");
+            signBitMap=null;
         }
 
         try {
@@ -86,6 +87,10 @@ public class DiaryTextPreview extends Fragment {
             Timber.d(e,"Bitmap File close failed");
         }
         return signBitMap!=null;
+    }
+    public static void recycleBitmap(){
+        if(signBitMap!=null)
+            signBitMap.recycle();
     }
 
     @Override

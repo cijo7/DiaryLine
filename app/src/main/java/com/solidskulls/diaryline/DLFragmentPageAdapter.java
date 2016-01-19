@@ -1,5 +1,6 @@
 package com.solidskulls.diaryline;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -19,7 +20,7 @@ public class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
         dataBlockManager=new DataBlockManager(DLMainActivity.COUNT - 1 - position);
         dataBlockManager.readPackage();
         String str=dataBlockManager.getStringData();
-        return DiaryTextPreview.newInstance(str,dataBlockManager.printableDate());
+        return (DiaryTextPreview.newInstance(str,dataBlockManager.printableDate()));
     }
 
     @Override

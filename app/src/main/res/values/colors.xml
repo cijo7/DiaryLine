@@ -12,8 +12,21 @@
     <color name="iconsLight">#777</color>
 
     <color name="navigationView_background">#110080</color>
-    <color name="navigationView_circle">#0068be</color>
+    <color name="navigationView_circle">#ff6a00</color>
     <color name="navigationView_textDate">#ffffff</color>
     <color name="navigationView_textMonthYear">#ffffff</color>
+
+
+
+    <color name="background1">#9c0000</color>
+    <color name="background2">#8f0496</color>
+    <color name="background3">#3d0681</color>
+    <color name="background4">#04816a</color>
+    <color name="background5">#2f9603</color>
+    <color name="background6">#51354d</color>
+    <color name="background7">#735858</color>
+    <color name="background8">#284640</color>
+    <color name="background9">#42506c</color>
+    <color name="background10">#390c0d</color>
 
 </resources>

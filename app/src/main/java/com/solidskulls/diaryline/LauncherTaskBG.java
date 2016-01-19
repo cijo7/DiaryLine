@@ -27,7 +27,7 @@ public class LauncherTaskBG extends BroadcastReceiver {
             setAlarm(context);
             return;
         }
-        PushNotificationHelper.notify(context, "Reminder","Write your todays diary","Whats in your mind today?", 1);
+        PushNotificationHelper.notify(context, "Reminder","Write your today's diary","Whats in your mind today?", 1);
         setAlarm(context);
 
 

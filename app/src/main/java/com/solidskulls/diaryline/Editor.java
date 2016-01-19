@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import timber.log.Timber;
 
@@ -50,7 +51,7 @@ public class Editor extends AppCompatActivity {
         else
             editorMode=EDITOR_MODE_ADD;
         switch (editorMode){
-            case EDITOR_MODE_UPDATE:
+            case EDITOR_MODE_UPDATE://todo optimise
                 dataBlockManager.readPackage();
                 editorText.setText(dataBlockManager.getStringData());
                 break;
@@ -80,14 +81,14 @@ public class Editor extends AppCompatActivity {
             case EDITOR_MODE_ADD:
                 if(dataBlockManager.addPackage(editorText.getText().toString())) {
                     Timber.d( "Uri:" + DataBlockManager.lastUri);
-                    setResult(EDITOR_MODE_ADD);
+                    Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_LONG).show();
                     finish();
                 }else
                     Timber.d("Add Failed");
                 break;
             case EDITOR_MODE_UPDATE:
                 if(dataBlockManager.updatePackage(editorText.getText().toString())){
-                    setResult(EDITOR_MODE_UPDATE);
+                    Toast.makeText(getBaseContext(), "Updated", Toast.LENGTH_LONG).show();
                     finish();
                 }else
                     Timber.d("Update Failed");
