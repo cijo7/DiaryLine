@@ -1,6 +1,5 @@
 package com.solidskulls.diaryline;
 
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -10,7 +9,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  *
  */
 public class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
-    private DataBlockManager  dataBlockManager;
     public DLFragmentPageAdapter(FragmentManager fm) {
         super(fm);
     }

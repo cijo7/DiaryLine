@@ -1,7 +1,6 @@
 package com.solidskulls.diaryline;
 
 import android.animation.Animator;
-import android.animation.ArgbEvaluator;
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
@@ -13,6 +12,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -20,28 +22,38 @@ import java.util.Random;
  *
  */
 public class NavigatorView extends View  {
+    public int NAV_STRING_COUNT=6;
     public CircularArrayString circularArrayString;
 
     private String mMonthYear;
     private Paint mPaintBackground;
     private Paint mPaintTextDate,mPaintTextMonth;
     private Paint mPaintTextToUp, mPaintTextToDown;
-    private int startColor;
     private Paint mPaintCircle;
     private int WIDTH=768;
     private int HEIGHT=1248/5;
     private float offset=0,lCircleX=0,rCircleX=0;
     private int[] circlePositionX;
     private float radius,scaleUp=1,scaleDown=2;
-    private boolean mSwipeRight=false;
+    private boolean[] mSwipeRight;
+    private int mCount=0 , animateStackCount =0,animateUnStackCount=0;
+    private ValueAnimator animate;
     private int lastColorCode=-1;
     private float textSize;
-    private int arraySize=4;
+    private SimpleDateFormat simpleDateFormat,simpleDate;
+    private Date mDateSetter;
+    private long shownMilliSec;
 
 
     public NavigatorView(Context context){
         super(context);
     }
+
+    /**
+     * Constructor of NavigatorView
+     * @param context Context of parent activity
+     * @param attributeSet The attributes from xml
+     */
     public NavigatorView(Context context,AttributeSet attributeSet){
         super(context, attributeSet);
         mPaintBackground =new Paint(Paint.DITHER_FLAG);
@@ -51,7 +63,7 @@ public class NavigatorView extends View  {
         mPaintTextDate =new Paint(mPaintBackground);
         mPaintCircle=new Paint(mPaintBackground);
 
-        mPaintBackground.setColor(ContextCompat.getColor(context,R.color.navigationView_background));
+        mPaintBackground.setColor(ContextCompat.getColor(context, R.color.navigationView_background));
         mPaintCircle.setColor(ContextCompat.getColor(context, R.color.navigationView_circle));
 
         mPaintTextDate.setTextAlign(Paint.Align.CENTER);
@@ -62,7 +74,11 @@ public class NavigatorView extends View  {
         mPaintTextToDown =new Paint(mPaintTextDate);
         mPaintTextToUp =new Paint(mPaintTextDate);
         mPaintTextMonth.setColor(ContextCompat.getColor(context, R.color.navigationView_textMonthYear));
-        startColor=ContextCompat.getColor(context, R.color.background1);
+
+        mDateSetter =new Date();
+        simpleDateFormat=new SimpleDateFormat("dd", Locale.getDefault());
+        simpleDate=new SimpleDateFormat("MMMM yyyy",Locale.getDefault());
+
 
     }
 
@@ -85,6 +101,8 @@ public class NavigatorView extends View  {
         mPaintTextToUp.setTextSize(textSize);
         mPaintTextToDown.setTextSize(textSize * 2);
         circularArrayString =new CircularArrayString("0","1","2","3","4");
+        mSwipeRight=new boolean[1];
+        mSwipeRight[0]=false;
         invalidate();
     }
     @Override
@@ -93,7 +111,7 @@ public class NavigatorView extends View  {
         canvas.drawRect(0, 0, WIDTH, HEIGHT, mPaintBackground);
         if(!isInEditMode()) {//todo replace this guy on release
 
-            if (mSwipeRight) {
+            if (mSwipeRight[mCount]) {
 
                 canvas.drawCircle(circlePositionX[1] + offset, HEIGHT / 2, radius * scaleUp, mPaintCircle);
                 canvas.drawCircle(circlePositionX[2] + offset, HEIGHT / 2, radius * scaleDown, mPaintCircle);
@@ -120,6 +138,7 @@ public class NavigatorView extends View  {
         }
     }
 
+    //// TODO: 20/1/16 Make this view smarted and adapt to its surroundings by reducing its dependence.
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
@@ -127,24 +146,20 @@ public class NavigatorView extends View  {
         setMeasuredDimension(WIDTH, HEIGHT);
     }
 
-    public void updateNavigatorAnimation(boolean swipeRight){
-        final int end=getRandomColor();
-        ValueAnimator animate;
-        mSwipeRight=swipeRight;
+    /**
+     * The View Animating logic for transverse movements.
+     */
+    public void animateView(){
         PropertyValuesHolder scale =PropertyValuesHolder.ofFloat("scale", 0, 1);
-        PropertyValuesHolder color = PropertyValuesHolder.ofObject("color", new ArgbEvaluator(), startColor, end);
-        startColor=end;
-        if(swipeRight) {
+        if(mSwipeRight[mCount]) {
             PropertyValuesHolder circleOffSet = PropertyValuesHolder.ofFloat("offset", offset, offset + WIDTH / 4);
             PropertyValuesHolder externalCircle = PropertyValuesHolder.ofInt("external", 0,(int) (WIDTH / 4 + radius));
-            animate = ValueAnimator.ofPropertyValuesHolder(circleOffSet, externalCircle, color,scale);
-            animate.setDuration(500);
+            animate = ValueAnimator.ofPropertyValuesHolder(circleOffSet, externalCircle, scale);
             animate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     circlePositionX[0]=(int) animation.getAnimatedValue("external");
                     offset = (float) animation.getAnimatedValue("offset");
-                    mPaintBackground.setColor((int) animation.getAnimatedValue("color"));
                     float factor=(float)animation.getAnimatedValue("scale");
                     scaleUp=1+factor;
                     scaleDown=2-factor;
@@ -169,6 +184,7 @@ public class NavigatorView extends View  {
                     scaleUp=1;
                     mPaintTextToUp.setTextSize(textSize);
                     mPaintTextToDown.setTextSize(textSize * 2);
+                    clearAnimationStack();
                 }
 
                 @Override
@@ -184,20 +200,18 @@ public class NavigatorView extends View  {
         }else { //Swipe Left
             PropertyValuesHolder circleOffSet = PropertyValuesHolder.ofFloat("offset", offset, offset - WIDTH / 4);
             PropertyValuesHolder externalCircle = PropertyValuesHolder.ofInt("external", 0, (int)(WIDTH / 4 + radius));
-            animate = ValueAnimator.ofPropertyValuesHolder(circleOffSet, externalCircle, color,scale);
-            animate.setDuration(500);
+            animate = ValueAnimator.ofPropertyValuesHolder(circleOffSet, externalCircle,scale);
             animate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    circlePositionX[0]=(int) animation.getAnimatedValue("external");
+                    circlePositionX[0] = (int) animation.getAnimatedValue("external");
                     offset = (float) animation.getAnimatedValue("offset");
-                    mPaintBackground.setColor((int) animation.getAnimatedValue("color"));
-                    float factor=(float)animation.getAnimatedValue("scale");
-                    scaleUp=1+factor;
-                    scaleDown=2-factor;
+                    float factor = (float) animation.getAnimatedValue("scale");
+                    scaleUp = 1 + factor;
+                    scaleDown = 2 - factor;
                     mPaintTextToUp.setTextSize(textSize + textSize * factor);
                     mPaintTextToDown.setTextSize(textSize * 2 - textSize * factor);
-                    circularArrayString.reCalculateBounds(3,2);
+                    circularArrayString.reCalculateBounds(3, 2);
                     invalidate();
                 }
             });
@@ -211,11 +225,12 @@ public class NavigatorView extends View  {
                 public void onAnimationEnd(Animator animation) {//Swipe Left
                     offset = 0;
                     circularArrayString.pushForward();
-                    circlePositionX[0]=0;
-                    scaleUp=1;
-                    scaleDown=2;
+                    circlePositionX[0] = 0;
+                    scaleUp = 1;
+                    scaleDown = 2;
                     mPaintTextToUp.setTextSize(textSize);
                     mPaintTextToDown.setTextSize(textSize * 2);
+                    clearAnimationStack();
                 }
 
                 @Override
@@ -235,9 +250,99 @@ public class NavigatorView extends View  {
                 return (float) (Math.cos((input + 1) * Math.PI) / 2.0f) + 0.5f;
             }
         });
-        animate.start();
 
     }
+
+    /**
+     * Request for a new View Animation. The requests are added to a animation stack and implemented via animateView()
+     * @param swipeRight True if user has swiped towards right.
+     */
+    public void updateNavigatorAnimation(boolean swipeRight){
+        if(animateStackCount ==0) {
+            animateStackCount++;//Stack Increased
+            mSwipeRight=new boolean[1];
+            mSwipeRight[0]=swipeRight;
+            updateNavData();
+            animateView();
+            animate.setDuration(300);
+            animate.start();
+            return;
+        }
+        animateStackCount++;
+        boolean[] tmp=new boolean[animateStackCount];
+        tmp[animateStackCount-1]=swipeRight;
+        int i=0;
+        while (tmp.length-1>i){
+            tmp[i]=mSwipeRight[i];
+            i++;
+        }
+        mSwipeRight=tmp;
+    }
+
+    /**
+     * Once animation is finished the animation stack needs to be cleared and made ready for next
+     * Set of animations. This method is called from animator's animation end listener.
+     */
+    public void clearAnimationStack(){
+        animateUnStackCount++;
+        if(animateStackCount>animateUnStackCount){//Checking for next stack
+            mCount++;
+            updateNavData();
+            animateView();
+            animate.setDuration(200);
+            animate.start();
+        }else {//If we don't have anything in stack lets reset mCount for set of animations
+            mCount = 0;
+            animateStackCount=0;
+            animateUnStackCount=0;
+        }
+    }
+
+    /**
+     * Initialises Navigator View with default data.
+     * @param milliSec Set display date in millisecond
+     */
+    public void setNavigationData(long milliSec){
+        shownMilliSec=milliSec;
+        milliSec+=(long)(((float)NAV_STRING_COUNT /2)-1)*24*60*60*1000;
+        mDateSetter.setTime(milliSec);
+
+        String[] days=new String[NAV_STRING_COUNT];
+        days[0]="";
+        //Puts the string to format {null,17,18,19,20,21}
+        for(int i=NAV_STRING_COUNT-1;i>0;i--){
+            days[i]=simpleDateFormat.format(mDateSetter);
+            milliSec-=24*60*60*1000;
+            mDateSetter.setTime(milliSec);
+        }
+        circularArrayString.refresh(days);
+
+        mDateSetter.setTime(shownMilliSec);
+        updateMonth(simpleDate.format(mDateSetter));
+    }
+
+    /**
+     * Update the Navigation date
+     */
+    private void updateNavData(){
+        if(mSwipeRight[mCount]){
+            mDateSetter.setTime(shownMilliSec-(NAV_STRING_COUNT/2)*24*60*60*1000);
+            circularArrayString.update(simpleDateFormat.format(mDateSetter));
+            shownMilliSec-=24*60*60*1000;
+        }else {
+            mDateSetter.setTime(shownMilliSec+(NAV_STRING_COUNT/2)*24*60*60*1000);
+            circularArrayString.update(simpleDateFormat.format(mDateSetter));
+            shownMilliSec+=24*60*60*1000;
+        }
+        mDateSetter.setTime(shownMilliSec);
+        updateMonth(simpleDate.format(mDateSetter));
+    }
+
+
+    /**
+     * Returns a Random Color from a list of Colors Chosen.
+     * @return int Color
+     */
     private int getRandomColor(){
     Random random=new Random();
     int r;
@@ -291,7 +396,6 @@ public class NavigatorView extends View  {
         private float[] textCentreY;
         private int height;
         private Rect tmp=new Rect(0,0,0,0);
-        private short mPivotI,mPivotJ;
         CircularArrayString(String... strings){
             array=strings;
             index=1;//0 is the update array
@@ -308,7 +412,7 @@ public class NavigatorView extends View  {
 
         /**
          * Reset the data with in the
-         * @param strings
+         * @param strings Strings to add to new Queue.
          */
         public void refresh(String... strings){
             array=strings;
@@ -372,15 +476,12 @@ public class NavigatorView extends View  {
             textCentreY[idUp]=height-tmp.exactCenterY();
             mPaintTextToDown.getTextBounds(array[idDown],0,array[idDown].length(),tmp);
             textCentreY[idDown]=height-tmp.exactCenterY();
-            mPivotI =(short)i;
-            mPivotJ=(short)j;
         }
 
         /**
          * <p>
          * Adds the String to Writing head of Queue
          * </p>
-         * See also {@link #update(String,int)}.
          * @param value Value of String to Display
          */
         public void update(String value){
@@ -393,24 +494,6 @@ public class NavigatorView extends View  {
 
             mPaintTextDate.getTextBounds(array[head], 0, array[head].length(),tmp);
             textCentreY[head]=height-tmp.exactCenterY();
-        }
-
-        /**
-         * <p>
-         * Adds the String to Writing head of Queue. This variant of the method is used for initialisation.
-         * </p>
-         * See also {@link #update(String)}.
-         * @param value Value of String
-         * @param i Position of string
-         */
-        public void update(String value,int i){
-            int head=(index+i)%(array.length);
-
-            array[head]=value;
-
-            mPaintTextDate.getTextBounds(array[head], 0, array[head].length(),tmp);
-            textCentreY[head]=height-tmp.exactCenterY();
-            reCalculateBounds(mPivotI,mPivotJ);//todo Inefficient Call. Logic to redisigned. Left empty because called from thread.
         }
 
     }

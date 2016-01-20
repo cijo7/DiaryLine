@@ -14,16 +14,15 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.solidskulls.diaryline.util.BitmapCompressor;
+import com.solidskulls.diaryline.util.BitmapWrapper;
 
-import timber.log.Timber;
+
 
 public class SignatureMaker extends AppCompatActivity {
 
     private SignatureDrawHelper signatureDrawHelper;
-    private static Bitmap bitmap;
+    private Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,41 +52,15 @@ public class SignatureMaker extends AppCompatActivity {
     }
     private void save(){
 
-       /* float Width=600,height=200;
-
-        int w=bitmap.getWidth();
-        int h=bitmap.getHeight();
-        float sX=Width/w;
-        float sY=height/h;
-
-        Matrix m=new Matrix();
-        m.postScale(sX, sY);
-
-        Bitmap scaledBitmap= Bitmap.createBitmap(bitmap, 0, 0, w, h, m, false);
-
-*/
+        new BitmapCompressor().execute(new BitmapWrapper(bitmap,this,DataBlockManager.SCREEN_WIDTH/4,"sign.png"));
         //// TODO: 16/1/16 Make the file size smaller by scaling
-        FileOutputStream file= null;
-        try {
-            file = this.openFileOutput("sign.png", Context.MODE_PRIVATE);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, file);
-        } catch (FileNotFoundException e) {
-            Timber.d(e,"File not found");
-        }
 
-        try {
-            if (file != null) {
-                file.close();
-            }
-        } catch (IOException e) {
-            Timber.d(e,"File not closed");
-        }
     }
 
 
 
 
-    public static class SignatureDrawHelper extends View {
+    public class SignatureDrawHelper extends View {
         private Paint mPaint;
         private Paint dotPaint;
         private Path mPath,dotPath;
@@ -114,8 +87,8 @@ public class SignatureMaker extends AppCompatActivity {
         }
 
         @Override
-        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-            super.onSizeChanged(w, h, oldw, oldh);
+        protected void onSizeChanged(int w, int h, int oldW, int oldH) {
+            super.onSizeChanged(w, h, oldW, oldH);
 
             bitmap=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);
             mCanvas=new Canvas(bitmap);
@@ -129,8 +102,8 @@ public class SignatureMaker extends AppCompatActivity {
 
         @Override
         public void onDraw(Canvas canvas) {
-            canvas.drawBitmap(bitmap, 0, 0, mPaint);
-            canvas.drawPath(mPath, mPaint);
+            canvas.drawBitmap(bitmap, 0, 0, mPaint);//Previous Drawing states
+            canvas.drawPath(mPath, mPaint);//Real time Drawing happens here
             canvas.drawPath(dotPath,dotPaint);
         }
 

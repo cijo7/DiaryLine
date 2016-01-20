@@ -8,22 +8,21 @@
     android:layout_height="match_parent">
     <RelativeLayout
     android:layout_height="match_parent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
     android:weightSum="1">
     <ImageView
         android:id="@+id/blankIcon"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:visibility="gone"
         android:contentDescription="@string/diary_empty_content"
         android:background="@drawable/ic_blank_24dp"
-        android:layout_centerInParent="true"
-        android:padding="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:padding="20dp"
+        android:padding="5dp"
         android:text="@string/empty_string"
         android:visibility="gone"
         android:textSize="20sp"
@@ -42,8 +41,8 @@
         />
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:visibility="visible"
         android:layout_below="@id/preview_Text"

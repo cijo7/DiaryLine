@@ -11,11 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import timber.log.Timber;
 
 public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnFragmentInteractionListener,DiaryTextPreview.OnFragmentInteractionListener {
@@ -27,11 +22,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     private DLFragmentPageAdapter dlFragmentPageAdapter;
 
     private static int mPosition=COUNT-1;
-    private static int NAV_STRING_COUNT =6;
-    private boolean mSwipeRight=true;
-    private long shownMilliSec;
-    private SimpleDateFormat simpleDateFormat,simpleDate;
-    private Date mDateSetter;
     public Coordinator mCoordinator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +49,8 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
         navigatorView.navigatorViewInIt(DataBlockManager.SCREEN_WIDTH, DataBlockManager.SCREEN_HEIGHT);//Initialise navigation view
 
-        mDateSetter =new Date();
-        simpleDateFormat=new SimpleDateFormat("dd", Locale.getDefault());
-        simpleDate=new SimpleDateFormat("MMMM yyyy",Locale.getDefault());
-        setNavigationData(DataBlockManager.getCurrentMilliseconds()-((long)(COUNT-mPosition-1))*24*60*60*1000);
+
+        navigatorView.setNavigationData(DataBlockManager.getCurrentMilliseconds()-((long)(COUNT-mPosition-1))*24*60*60*1000);
 
         viewPager.setAdapter(dlFragmentPageAdapter);
         viewPager.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -77,12 +65,8 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
             @Override
             public void onPageSelected(int position) {
                 if (mPosition > position) {                                         //Swipe Right
-                    mSwipeRight = true;
-                    updateNavData();
                     navigatorView.updateNavigatorAnimation(true);
                 }else if (mPosition < position) {                                   //Swipe Left
-                    mSwipeRight=false;
-                    updateNavData();
                     navigatorView.updateNavigatorAnimation(false);
                 }
 
@@ -157,42 +141,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         DiaryTextPreview.recycleBitmap();//Recycle the static bitmap. Just in case.
     }
 
-    /**
-     * Initialises Navigator View with default data.
-     * @param milliSec Set display date in millisecond
-     */
-    private void setNavigationData(long milliSec){
-        shownMilliSec=milliSec;
-        milliSec+=(long)(((float)NAV_STRING_COUNT /2)-1)*24*60*60*1000;
-        mDateSetter.setTime(milliSec);
 
-        String[] days=new String[NAV_STRING_COUNT];
-        days[0]="";
-        //Puts the string to format {null,17,18,19,20,21}
-        for(int i=NAV_STRING_COUNT-1;i>0;i--){
-            days[i]=simpleDateFormat.format(mDateSetter);
-            milliSec-=24*60*60*1000;
-            mDateSetter.setTime(milliSec);
-        }
-        navigatorView.circularArrayString.refresh(days);
-
-        mDateSetter.setTime(shownMilliSec);
-        navigatorView.updateMonth(simpleDate.format(mDateSetter));
-    }
-
-    private void updateNavData(){
-        if(mSwipeRight){
-            mDateSetter.setTime(shownMilliSec-(NAV_STRING_COUNT/2)*24*60*60*1000);
-            navigatorView.circularArrayString.update(simpleDateFormat.format(mDateSetter));
-            shownMilliSec-=24*60*60*1000;
-        }else {
-            mDateSetter.setTime(shownMilliSec+(NAV_STRING_COUNT/2)*24*60*60*1000);
-            navigatorView.circularArrayString.update(simpleDateFormat.format(mDateSetter));
-            shownMilliSec+=24*60*60*1000;
-        }
-        mDateSetter.setTime(shownMilliSec);
-        navigatorView.updateMonth(simpleDate.format(mDateSetter));
-    }
 
     /**
      * Called when diary is to be edited

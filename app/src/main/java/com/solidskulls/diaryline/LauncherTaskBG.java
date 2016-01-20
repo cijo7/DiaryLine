@@ -17,7 +17,6 @@ import timber.log.Timber;
 
 public class LauncherTaskBG extends BroadcastReceiver {
     static String MESSAGE ="WhatToDo";
-    static boolean SKIP=true;
     @Override
     public void onReceive(Context context,Intent intent){
         Timber.d("We are in broadcast it!");
