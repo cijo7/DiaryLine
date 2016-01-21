@@ -8,7 +8,7 @@
     android:layout_height="match_parent" tools:context="com.solidskulls.diaryline.Editor"
     >
 
-<!--todo Must implement the appbar to be visible on all devices-->
+<!--todo The app bar is getting hidden on keyboard input-->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,5 +19,6 @@
         android:id="@+id/diaryInputString"
         android:background="@null"
         android:inputType="textMultiLine|textCapSentences|textNoSuggestions|textAutoCorrect"
+        android:fontFamily="sans-serif"
         />
 </FrameLayout>

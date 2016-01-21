@@ -12,8 +12,8 @@
     android:weightSum="1">
     <ImageView
         android:id="@+id/blankIcon"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"
         android:contentDescription="@string/diary_empty_content"
         android:background="@drawable/ic_blank_24dp"
@@ -37,6 +37,8 @@
         android:id="@+id/preview_Text"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:padding="@dimen/content_padding"
+        android:textSize="20sp"
+        android:textColor="#000"
         android:scrollbars="vertical"
         />
 

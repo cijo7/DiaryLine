@@ -53,7 +53,6 @@ public class SignatureMaker extends AppCompatActivity {
     private void save(){
 
         new BitmapCompressor().execute(new BitmapWrapper(bitmap,this,DataBlockManager.SCREEN_WIDTH/4,"sign.png"));
-        //// TODO: 16/1/16 Make the file size smaller by scaling
 
     }
 

@@ -10,12 +10,15 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+
+import timber.log.Timber;
 
 /**
  * Created by cijo-saju on 17/1/16.
@@ -131,7 +134,7 @@ public class NavigatorView extends View  {
                 canvas.drawText(circularArrayString.getString(1), circlePositionX[1] - circlePositionX[0], circularArrayString.getVerticalCentre(1), mPaintTextDate);
                 canvas.drawText(circularArrayString.getString(2), circlePositionX[2] + offset, circularArrayString.getVerticalCentre(2), mPaintTextToDown);
                 canvas.drawText(circularArrayString.getString(3), circlePositionX[3] + offset, circularArrayString.getVerticalCentre(3), mPaintTextToUp);
-                canvas.drawText(circularArrayString.getString(0), rCircleX - circlePositionX[0], circularArrayString.getVerticalCentre(0), mPaintTextDate);
+                canvas.drawText(circularArrayString.getString(4), rCircleX - circlePositionX[0], circularArrayString.getVerticalCentre(4), mPaintTextDate);
             }
 
             canvas.drawText(mMonthYear, WIDTH / 2, 3 * HEIGHT / 4 + HEIGHT / 6, mPaintTextMonth);
@@ -304,7 +307,7 @@ public class NavigatorView extends View  {
      */
     public void setNavigationData(long milliSec){
         shownMilliSec=milliSec;
-        milliSec+=(long)(((float)NAV_STRING_COUNT /2)-1)*24*60*60*1000;
+        milliSec+=(long)((NAV_STRING_COUNT /2)-1)*24*60*60*1000;
         mDateSetter.setTime(milliSec);
 
         String[] days=new String[NAV_STRING_COUNT];
@@ -398,7 +401,7 @@ public class NavigatorView extends View  {
         private Rect tmp=new Rect(0,0,0,0);
         CircularArrayString(String... strings){
             array=strings;
-            index=1;//0 is the update array
+            index=0;//0 is the update array
             height=HEIGHT/2;
             int i=0;
             textCentreY=new float[array.length];
@@ -477,11 +480,8 @@ public class NavigatorView extends View  {
             mPaintTextToDown.getTextBounds(array[idDown],0,array[idDown].length(),tmp);
             textCentreY[idDown]=height-tmp.exactCenterY();
         }
-
         /**
-         * <p>
          * Adds the String to Writing head of Queue
-         * </p>
          * @param value Value of String to Display
          */
         public void update(String value){
