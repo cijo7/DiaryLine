@@ -29,4 +29,7 @@
     <color name="background9">#FF3F89B7</color>
     <color name="background10">#FF3F89B7</color>
 
+
+    <color name="quoteBlock">#606060</color>
+
 </resources>

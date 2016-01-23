@@ -39,7 +39,7 @@ public class BitmapCompressor extends AsyncTask<BitmapWrapper,Void ,Void>{
                     fileOutputStream = context.openFileOutput(bitmapWrapper.getFileName(), Context.MODE_PRIVATE);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 50, fileOutputStream);               //137kb on test device. I think we need another way to achieve more.
                 } catch (FileNotFoundException e) {                                                 // Its enough for initial release.
-                    Timber.d(String.format("%s", e.getStackTrace()));
+                    Timber.d(e,"File Not Found");
                 }
                 Timber.d("Compressed Size:" + bitmap.getByteCount() / 1024 + " Kb");
                 bitmap.recycle();
@@ -47,7 +47,7 @@ public class BitmapCompressor extends AsyncTask<BitmapWrapper,Void ,Void>{
                     try {
                         fileOutputStream.close();
                     } catch (IOException e) {
-                        Timber.d("Exception" + String.format("%s", e.getStackTrace()));
+                        Timber.d(e,"IOException" );
                     }
                 }
             }
