@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.solidskulls.diaryline.Editor">
     <item android:id="@+id/action_done"
         android:icon="@drawable/ic_done_24dp"
-        android:title="Done"
+        android:title="@string/editorMenu_save"
         android:orderInCategory="90" app:showAsAction="always"/>
 </menu>

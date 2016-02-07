@@ -6,8 +6,9 @@
     android:layout_height="match_parent" android:fitsSystemWindows="true"
     tools:context=".DLMainActivity">
 
-    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
@@ -18,23 +19,68 @@
 <!-- The Fragments-->
 
 
-
-
     <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/dataContainer"
         android:paddingTop="?attr/actionBarSize">
-        <com.solidskulls.diaryline.NavigatorView
+        <com.solidskulls.diaryline.ui.NavigatorView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/navigator_view"/>
 
-        <android.support.v4.view.ViewPager
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/content_view"
+            android:layout_below="@id/navigator_view"
+            android:name="com.solidskulls.diaryline.DiaryTextPreview"
+            tools:layout="@layout/fragment_diary_text" />
+
+        <!--android.support.v4.view.ViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/navigator_view"
-            android:id="@+id/viewPager"/>
+            android:id="@+id/viewPager"/-->
+
+
+        <LinearLayout
+            android:id="@+id/popup_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/overlay_bg"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:visibility="gone" >
+            <TextView
+                android:id="@+id/popup_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_list"
+                android:text="@string/popup_list"
+                android:layout_weight="1"
+                style="@style/popupActionButtons"
+                />
+            <TextView
+                android:id="@+id/popup_notes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_notes"
+                android:text="@string/popup_notes"
+                android:layout_weight="1"
+                style="@style/popupActionButtons"
+                />
+            <TextView
+                android:id="@+id/popup_diary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_diary"
+                android:text="@string/popup_diary"
+                android:layout_weight="1"
+                style="@style/popupActionButtons"
+                />
+
+        </LinearLayout>
 
     </RelativeLayout>
     <android.support.design.widget.FloatingActionButton android:id="@+id/fab"

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_editor_diary"
+    tools:context="com.solidskulls.diaryline.Editor"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/editor_minHeight"
+        android:hint="@string/editor_hint"
+        android:id="@+id/editor_text"
+        android:background="@null"
+        android:inputType="textMultiLine|textCapSentences|textNoSuggestions|textAutoCorrect"
+        android:fontFamily="sans-serif"
+        />
+
+</LinearLayout>

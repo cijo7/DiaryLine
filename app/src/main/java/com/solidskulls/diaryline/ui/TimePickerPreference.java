@@ -1,4 +1,4 @@
-package com.solidskulls.diaryline;
+package com.solidskulls.diaryline.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,8 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.NumberPicker;
+
+import com.solidskulls.diaryline.R;
 
 import timber.log.Timber;
 

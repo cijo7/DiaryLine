@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Cards">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/card_notes_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_settings"
+                android:drawableLeft="@drawable/ic_profile_24dp"
+                android:drawableStart="@drawable/ic_profile_24dp"
+                style="@style/cardTitle"
+                android:background="#ffac07"/>
+            <TextView
+                android:id="@+id/card_notes_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/author_sign"
+                style="@style/cardText"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -1,9 +1,10 @@
-package com.solidskulls.diaryline.util;
+package com.solidskulls.diaryline.Utility;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
+import android.os.Build;
 
 
 import java.io.FileNotFoundException;
@@ -26,7 +27,7 @@ public class BitmapCompressor extends AsyncTask<BitmapWrapper,Void ,Void>{
         Context context;
         FileOutputStream fileOutputStream=null;
         try {
-            for (BitmapWrapper bitmapWrapper : bitmapWrappers) {// TODO: 20/1/16 Resolve backward compatibility issue
+            for (BitmapWrapper bitmapWrapper : bitmapWrappers) {
                 w = bitmapWrapper.getBitmap().getWidth();
                 h = bitmapWrapper.getBitmap().getHeight();
                 rW = bitmapWrapper.getReqWidth();
@@ -41,7 +42,10 @@ public class BitmapCompressor extends AsyncTask<BitmapWrapper,Void ,Void>{
                 } catch (FileNotFoundException e) {                                                 // Its enough for initial release.
                     Timber.d(e,"File Not Found");
                 }
-                Timber.d("Compressed Size:" + bitmap.getByteCount() / 1024 + " Kb");
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT)
+                    Timber.d("Compressed Size:" + bitmap.getAllocationByteCount() / 1024 + " Kb");
+                else
+                    Timber.d("Compressed Size:" + bitmap.getByteCount() / 1024 + " Kb");
                 bitmap.recycle();
                 if (fileOutputStream != null) {
                     try {

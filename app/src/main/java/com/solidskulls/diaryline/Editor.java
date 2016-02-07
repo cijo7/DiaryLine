@@ -1,5 +1,7 @@
 package com.solidskulls.diaryline;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,24 +15,56 @@ import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.solidskulls.diaryline.Utility.HtmlSpannableParser;
+import com.solidskulls.diaryline.data.AppConstants;
+import com.solidskulls.diaryline.data.DataBlockManager;
+import com.solidskulls.diaryline.ui.HeaderSpan;
+import com.solidskulls.diaryline.ui.QuoteSpanModern;
+import com.solidskulls.diaryline.data.DataBlockContainer;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import timber.log.Timber;
 
 public class Editor extends AppCompatActivity {
 
+    /**
+     * This defines if the editor should modify existing content or add new content<br/>
+     * Possible values:{@link #MODE_ADD},{@link #MODE_UPDATE}.
+     */
     static final String EDITOR_MODE="EditorMode";
     static final String EDITOR_INIT_OFFSET_DAYS ="totalDays";
-    static final int EDITOR_MODE_ADD=1;
-    static final int EDITOR_MODE_UPDATE=2;
-    private int editorMode;
-    private int offsetDays;
-    private EditText editorText;
-    private static DataBlockManager dataBlockManager;
-
-    private EditorParser editorParser;
+    /**
+     * The type of content editor is handling.<br/>
+     * Possible values:{@link #NOTES},{@link #DIARY}.
+     */
+    static final String EDITOR_TYPE="type";
+    /**
+     * Editor modes.
+     */
+    static final int MODE_ADD =1, MODE_UPDATE =2;
+    /**
+     * Editor mode types.
+     */
+    static final int NOTES=11,DIARY=12;
+    static final String DATA_ID="data";
+    private int editorMode,contentType;
+    private EditText title,editorText;
+    private Button reminder;
+    private Calendar reminderDate=Calendar.getInstance();
+    private SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.US);
+    private DataBlockContainer dataBlockContainer;
 
 
     @Override
@@ -38,8 +72,16 @@ public class Editor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle extras=getIntent().getExtras();
-        offsetDays =extras.getInt(EDITOR_INIT_OFFSET_DAYS);
-        setContentView(R.layout.activity_editor);
+        editorMode=extras.getInt(EDITOR_MODE);
+        contentType=extras.getInt(EDITOR_TYPE);
+        if (editorMode == MODE_UPDATE)
+            dataBlockContainer = extras.getParcelable(DATA_ID);
+        else
+            dataBlockContainer = new DataBlockContainer();
+        if (contentType == NOTES)
+            setContentView(R.layout.activity_editor_notes);
+        else
+            setContentView(R.layout.activity_editor_diary);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,26 +89,71 @@ public class Editor extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-        editorText=(EditText)findViewById(R.id.diaryInputString);
-        editorParser=new EditorParser(this);
+        if(contentType==NOTES) {
+            dataBlockContainer.setTag(AppConstants.NOTES);
+            title = (EditText) findViewById(R.id.editor_title);
+            reminder = (Button) findViewById(R.id.editor_reminder);
+            reminder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final DatePickerDialog date;
+                    final TimePickerDialog time;
+
+                    time=new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            reminderDate.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                            reminderDate.set(Calendar.MINUTE,minute);
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MMM dd, HH:mm a",Locale.getDefault());
+                            reminder.setText(simpleDateFormat.format(reminderDate.getTime()));
+                            dataBlockContainer.setReminder(format.format(reminderDate.getTime()));
+                        }
+                    },reminderDate.get(Calendar.HOUR_OF_DAY),reminderDate.get(Calendar.MINUTE),false);
+                    date=new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            reminderDate.set(Calendar.YEAR,year);
+                            reminderDate.set(Calendar.MONTH,monthOfYear);
+                            reminderDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                            time.show();
+                        }
+                    }, reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH), reminderDate.get(Calendar.DAY_OF_MONTH));
+                    date.show();
+                }
+            });
+        }else
+            dataBlockContainer.setTag(AppConstants.DIARY);
+
+        editorText=(EditText)findViewById(R.id.editor_text);
+        // TODO: 4/2/16 Allow enabling or disabling the parser from settings.
+        editorText.addTextChangedListener(new EditorParser(this));
     }
 
+    private Context getContext(){
+        return this;
+    }
     @Override
     public void onStart(){
         super.onStart();
-
-        dataBlockManager=new DataBlockManager(offsetDays);
-        if(dataBlockManager.ifExists())
-            editorMode=EDITOR_MODE_UPDATE;
-        else
-            editorMode=EDITOR_MODE_ADD;
         switch (editorMode){
-            case EDITOR_MODE_UPDATE://todo optimise
-                dataBlockManager.readPackage();
-                editorText.setText(Html.fromHtml(dataBlockManager.getStringData()), TextView.BufferType.SPANNABLE);
+            case MODE_UPDATE:
+                if(contentType==NOTES){
+                    title.setText(dataBlockContainer.getTitle());
+                    if(dataBlockContainer.getReminder()!=null){
+                        try {
+                            reminderDate.setTime(format.parse(dataBlockContainer.getReminder()));
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, HH:mm a", Locale.getDefault());
+                            reminder.setText(simpleDateFormat.format(reminderDate.getTime()));
+                        } catch (ParseException e) {
+                            Timber.d(e, "Unable to parse reminder.");
+                        }
+                    }
+                }
+                editorText.setText(HtmlSpannableParser.toSpannable(dataBlockContainer.getText()));
                 break;
         }
-        editorText.addTextChangedListener(editorParser);
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -88,28 +175,43 @@ public class Editor extends AppCompatActivity {
      */
     public void publish() {
 
-        switch (editorMode){
-            case EDITOR_MODE_ADD:
-                if(dataBlockManager.addPackage(HtmlSpannableParser.toHtml(editorText.getText()))) {
-                    Timber.d( "Uri:" + DataBlockManager.lastUri);
-                    Toast.makeText(getBaseContext(), "Saved", Toast.LENGTH_LONG).show();
-                    finish();
-                }else
-                    Timber.d("Add Failed");
+        switch (editorMode) {
+            case MODE_ADD:
+                dataBlockContainer.setText(HtmlSpannableParser.toHtml(editorText.getText()));
+                dataBlockContainer.setDate(format.format(new Date()));
+                if(contentType==NOTES) {
+                    dataBlockContainer.setTitle(title.getText().toString());
+                    if (DataBlockManager.addNotes(dataBlockContainer, this)) {
+                        Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
+                    } else
+                        Timber.d("Failed to add new notes");
+                }else if(contentType==DIARY){
+                    if(DataBlockManager.addDiary(dataBlockContainer,this))
+                        Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
+                    else
+                        Timber.d("Failed to add new entry");
+                }
                 break;
-            case EDITOR_MODE_UPDATE:
-                if(dataBlockManager.updatePackage(HtmlSpannableParser.toHtml(editorText.getText()))){
-                    Toast.makeText(getBaseContext(), "Updated", Toast.LENGTH_LONG).show();
-                    finish();
-                }else
-                    Timber.d("Update Failed");
+            case MODE_UPDATE:
+                dataBlockContainer.setText(HtmlSpannableParser.toHtml(editorText.getText()));
+                if(contentType==NOTES) {
+                    dataBlockContainer.setTitle(title.getText().toString());
+                    if (DataBlockManager.updateNotes(dataBlockContainer, this)) {
+                        Toast.makeText(this, "Updated", Toast.LENGTH_LONG).show();
+                    } else
+                        Timber.i("Update Failed");
+                }else if(contentType==DIARY){
+                    if(DataBlockManager.updateDiary(dataBlockContainer,this))
+                        Toast.makeText(this, "Updated", Toast.LENGTH_LONG).show();
+                } else
+                    Timber.i("Update Failed");
                 break;
             default:
                 Timber.d("Invalid Mode");
                 break;
         }
+        finish();
     }
-    // TODO: 13/1/16 Decide if you wanna go back automatically.
     private class EditorParser implements TextWatcher{
         private boolean IsEditable=true;//Looper lock
         /**

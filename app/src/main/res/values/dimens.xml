@@ -19,4 +19,16 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+
+
+    <dimen name="cardTitleTextSize">20sp</dimen>
+    <dimen name="cardTitlePadding">5dp</dimen>
+    <dimen name="cardTitleIconPadding">5dp</dimen>
+    <dimen name="cardPadding">0dp</dimen>
+    <dimen name="cardCornerRadius">5dp</dimen>
+    <dimen name="cardMargin">4dp</dimen>
+
+    <dimen name="cardTextPadding">10dp</dimen>
+    <dimen name="cardTextSize">15sp</dimen>
+    <dimen name="cardTextHeight">50dp</dimen>
 </resources>

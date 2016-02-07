@@ -27,8 +27,8 @@ public class LauncherTaskBG extends BroadcastReceiver {
             return;
         }
         // FIXME: 20/1/16 On works when app is open @priority(100)
-        PushNotificationHelper.notify(context, "Reminder","Write your today's diary","Whats in your mind today?", 1);
-        setAlarm(context);
+        PushNotificationHelper.notify(context, "Reminder", "Write your today's diary", "Whats in your mind today?", 1);
+        setAlarm(context);// TODO: 26/1/16 Don't set alarm if diary entry alredy added
 
 
     }

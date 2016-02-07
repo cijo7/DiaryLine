@@ -1,4 +1,4 @@
-package com.solidskulls.diaryline;
+package com.solidskulls.diaryline.ui;
 
 /*
  * Copyright (C) 2006 The Android Open Source Project

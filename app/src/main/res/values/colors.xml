@@ -32,4 +32,11 @@
 
     <color name="quoteBlock">#606060</color>
 
+    <color name="overlay_bg">#ffffff</color>
+
+
+    <color name="dividerColor">#717171</color>
+    <!--Basic-->
+    <color name="white">#ffffff</color>
+
 </resources>

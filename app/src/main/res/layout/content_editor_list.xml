@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_editor_list"
+    tools:context="com.solidskulls.diaryline.EditorList"
+    android:id="@+id/editorList_layout">
+    <EditText
+        android:id="@+id/editorList_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/editor_list_title"
+        android:background="@null"
+        style="@style/editor_titles"/>
+    <View
+        android:id="@+id/editorList_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/dividerColor"
+        android:layout_below="@id/editorList_title"/>
+<RelativeLayout
+    android:id="@+id/editorList_reminderLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/editorList_divider"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentRight="true">
+    <ImageButton
+        android:id="@+id/editorList_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_reminder_24dp"
+        android:contentDescription="@string/editor_reminder"
+        android:background="@null" />
+    <TextView
+        android:id="@+id/editorList_reminder_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/editorList_reminder"
+        android:layout_toEndOf="@id/editorList_reminder"/>
+
+</RelativeLayout>
+
+
+
+    <ImageButton
+        android:id="@+id/editorList_addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_send_24dp"
+        android:contentDescription="@string/editorList_buttonDescription"
+        android:background="@null"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"/>
+    <EditText
+        android:id="@+id/editorList_addText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/editor_list_addText"
+        android:layout_toLeftOf="@id/editorList_addButton"
+        android:layout_toStartOf="@id/editorList_addButton"
+        android:layout_alignBottom="@id/editorList_addButton"
+        android:background="#fff"
+        android:padding="10dp"
+        android:maxLines="1">
+        <requestFocus/>
+    </EditText>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/editorList_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editorList_reminderLayout"
+        android:layout_above="@id/editorList_addText"
+        android:overScrollMode="never"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"/>
+
+</RelativeLayout>

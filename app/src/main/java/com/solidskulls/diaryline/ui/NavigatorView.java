@@ -1,4 +1,4 @@
-package com.solidskulls.diaryline;
+package com.solidskulls.diaryline.ui;
 
 import android.animation.Animator;
 import android.animation.PropertyValuesHolder;
@@ -10,15 +10,16 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.RelativeLayout;
+
+import com.solidskulls.diaryline.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
-
-import timber.log.Timber;
 
 /**
  * Created by cijo-saju on 17/1/16.
@@ -141,7 +142,7 @@ public class NavigatorView extends View  {
         }
     }
 
-    //// TODO: 20/1/16 Make this view smarted and adapt to its surroundings by reducing its dependence.
+    // TODO: 20/1/16 Make this view smarted and adapt to its surroundings by reducing its dependence.
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
@@ -152,7 +153,7 @@ public class NavigatorView extends View  {
     /**
      * The View Animating logic for transverse movements.
      */
-    public void animateView(){
+    private void animateView(){
         PropertyValuesHolder scale =PropertyValuesHolder.ofFloat("scale", 0, 1);
         if(mSwipeRight[mCount]) {
             PropertyValuesHolder circleOffSet = PropertyValuesHolder.ofFloat("offset", offset, offset + WIDTH / 4);
@@ -254,6 +255,29 @@ public class NavigatorView extends View  {
             }
         });
 
+    }
+
+    /**
+     * Collapse or ReEnter the view.
+     * @param collapse True if view is collapsing
+     */
+    public void collapseView(boolean collapse){
+        ValueAnimator animator;
+        if(collapse)
+            animator=ValueAnimator.ofInt(HEIGHT,0);
+        else
+            animator=ValueAnimator.ofInt(0,HEIGHT);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(200);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams)getLayoutParams();
+                lp.height=(int)animation.getAnimatedValue();
+                setLayoutParams(lp);
+            }
+        });
+        animator.start();
     }
 
     /**

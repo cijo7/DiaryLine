@@ -1,4 +1,4 @@
-package com.solidskulls.diaryline.util;
+package com.solidskulls.diaryline.Utility;
 
 import android.content.Context;
 import android.graphics.Bitmap;

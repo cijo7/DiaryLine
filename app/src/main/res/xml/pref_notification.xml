@@ -6,7 +6,7 @@
         android:key="@string/pref_notification_on"
         android:title="@string/pref_notification_on_title"
         android:defaultValue="true" />
-    <com.solidskulls.diaryline.TimePickerPreference
+    <com.solidskulls.diaryline.ui.TimePickerPreference
         android:key="@string/pref_notification_timer"
         android:title="@string/pref_notification_timer_title"
         android:dependency="@string/pref_notification_on"

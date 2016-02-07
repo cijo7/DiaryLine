@@ -1,4 +1,4 @@
-package com.solidskulls.diaryline;
+package com.solidskulls.diaryline.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,9 +14,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.solidskulls.diaryline.util.BitmapCompressor;
-import com.solidskulls.diaryline.util.BitmapWrapper;
-
+import com.solidskulls.diaryline.EnvironmentVariables;
+import com.solidskulls.diaryline.R;
+import com.solidskulls.diaryline.Utility.BitmapCompressor;
+import com.solidskulls.diaryline.Utility.BitmapWrapper;
 
 
 public class SignatureMaker extends AppCompatActivity {
@@ -52,7 +53,7 @@ public class SignatureMaker extends AppCompatActivity {
     }
     private void save(){
 
-        new BitmapCompressor().execute(new BitmapWrapper(bitmap,this,DataBlockManager.SCREEN_WIDTH/4,"sign.png"));
+        new BitmapCompressor().execute(new BitmapWrapper(bitmap,this, EnvironmentVariables.SCREEN_WIDTH/4,"sign.png"));
 
     }
 
