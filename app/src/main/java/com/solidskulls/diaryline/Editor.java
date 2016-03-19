@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
@@ -182,12 +181,12 @@ public class Editor extends AppCompatActivity {
                 if(contentType==NOTES) {
                     dataBlockContainer.setTitle(title.getText().toString());
                     if (DataBlockManager.addNotes(dataBlockContainer, this)) {
-                        Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.save), Toast.LENGTH_LONG).show();
                     } else
                         Timber.d("Failed to add new notes");
                 }else if(contentType==DIARY){
                     if(DataBlockManager.addDiary(dataBlockContainer,this))
-                        Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.save), Toast.LENGTH_LONG).show();
                     else
                         Timber.d("Failed to add new entry");
                 }
@@ -197,12 +196,12 @@ public class Editor extends AppCompatActivity {
                 if(contentType==NOTES) {
                     dataBlockContainer.setTitle(title.getText().toString());
                     if (DataBlockManager.updateNotes(dataBlockContainer, this)) {
-                        Toast.makeText(this, "Updated", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.save), Toast.LENGTH_LONG).show();
                     } else
                         Timber.i("Update Failed");
                 }else if(contentType==DIARY){
                     if(DataBlockManager.updateDiary(dataBlockContainer,this))
-                        Toast.makeText(this, "Updated", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.save), Toast.LENGTH_LONG).show();
                 } else
                     Timber.i("Update Failed");
                 break;
@@ -211,6 +210,12 @@ public class Editor extends AppCompatActivity {
                 break;
         }
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        Toast.makeText(this,getString(R.string.discard),Toast.LENGTH_SHORT).show();
+        return super.onSupportNavigateUp();
     }
     private class EditorParser implements TextWatcher{
         private boolean IsEditable=true;//Looper lock
@@ -571,11 +576,9 @@ public class Editor extends AppCompatActivity {
                             s.removeSpan(removeSpan);
                         mAction=0;
                         break;
-
                 }
                 IsEditable = true;                      //UnLocking Loops
             }
-
         }
     }
 }

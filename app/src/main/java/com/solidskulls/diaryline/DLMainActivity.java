@@ -31,8 +31,9 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     NavigatorView navigatorView;
     private ViewPager viewPager;
     private DLFragmentPageAdapter dlFragmentPageAdapter;
+    FloatingActionButton fab;
 
-    private static int mPosition=COUNT-1;
+    private static int mPosition=COUNT/2;
     public Coordinator mCoordinator;
     private boolean popped =true;
     @Override
@@ -50,9 +51,9 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
        // DataBlockManager.init(this);
 
-        /*viewPager=(ViewPager)findViewById(R.id.viewPager);*/
-        navigatorView=(NavigatorView)findViewById(R.id.navigator_view);/*
-        dlFragmentPageAdapter=new DLFragmentPageAdapter(getSupportFragmentManager());*/
+        viewPager=(ViewPager)findViewById(R.id.viewPager);
+        navigatorView=(NavigatorView)findViewById(R.id.navigator_view);
+        dlFragmentPageAdapter=new DLFragmentPageAdapter(getSupportFragmentManager());
 
         mCoordinator=new Coordinator();
     }
@@ -66,10 +67,10 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
         navigatorView.setNavigationData(Calendar.getInstance().getTimeInMillis());
 
-       /* viewPager.setAdapter(dlFragmentPageAdapter);
+        viewPager.setAdapter(dlFragmentPageAdapter);/*
         viewPager.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
         ViewGroup.LayoutParams l=viewPager.getLayoutParams();
-        l.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+        l.height= ViewGroup.LayoutParams.WRAP_CONTENT;*/
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -80,12 +81,11 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
             public void onPageSelected(int position) {
                 if (mPosition > position) {                                         //Swipe Right
                     navigatorView.updateNavigatorAnimation(true);
-                }else if (mPosition < position) {                                   //Swipe Left
+                } else if (mPosition < position) {                                   //Swipe Left
                     navigatorView.updateNavigatorAnimation(false);
                 }
 
                 mPosition = position;
-                //dlFragmentPageAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -94,8 +94,8 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
             }
         });
         viewPager.setCurrentItem(mPosition);
-*/
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,6 +169,8 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
             Animation animation1=AnimationUtils.loadAnimation(this,R.anim.scaleup),animation2=AnimationUtils.loadAnimation(this,R.anim.scaleup);
             TextView buttons;
 
+            fab.animate().rotation(45).setDuration(300).start();
+
             buttons=(TextView)findViewById(R.id.popup_list);
             buttons.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -176,6 +178,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
                     openListEditor();
                 }
             });
+            animation.setStartOffset(100);
             buttons.setAnimation(animation);
 
             buttons=(TextView)findViewById(R.id.popup_notes);
@@ -185,7 +188,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
                     onDiaryEdit(Editor.NOTES);
                 }
             });
-            animation1.setStartOffset(100);
+            animation1.setStartOffset(200);
             buttons.setAnimation(animation1);
 
             buttons=(TextView)findViewById(R.id.popup_diary);
@@ -195,10 +198,12 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
                     onDiaryEdit(Editor.DIARY);
                 }
             });
-            animation2.setStartOffset(150);
+            animation2.setStartOffset(300);
             buttons.setAnimation(animation2);
         }else {//Lets remove every thing
             popped =true;
+
+            fab.animate().rotation(0).setDuration(100).start();
             findViewById(R.id.popup_buttons).setVisibility(View.GONE);
             findViewById(R.id.popup_list).setOnClickListener(null);
             findViewById(R.id.popup_notes).setOnClickListener(null);

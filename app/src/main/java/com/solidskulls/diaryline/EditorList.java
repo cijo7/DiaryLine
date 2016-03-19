@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -121,6 +122,7 @@ public class EditorList extends AppCompatActivity {
 
 
         recyclerView=(RecyclerView)findViewById(R.id.editorList_recycler);
+        // FIXME: 7/2/16 The contents must be retained even when orientation changes.
         if(MODE==UPDATE) {
             listRecyclerAdapter = new ListRecyclerAdapter(new DataParser().textToList(container.getText()));
             title.setText(container.getTitle());
@@ -139,7 +141,7 @@ public class EditorList extends AppCompatActivity {
         listRecyclerAdapter.setInteractionListener(new ListRecyclerAdapter.RecyclerInteraction() {
             @Override
             public void showUndoNotification(final int index) {
-                Snackbar.make(findViewById(R.id.editorList_layout), "Marked as Done.", Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                Snackbar.make(findViewById(R.id.editorList_layout),getString(R.string.marked), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listRecyclerAdapter.undoRemoval(index);
@@ -147,7 +149,6 @@ public class EditorList extends AppCompatActivity {
                 }).show();
             }
         });
-
     }
 
     @Override
@@ -183,7 +184,6 @@ public class EditorList extends AppCompatActivity {
     /**
      * Save the List and quit.
      */
-
     private void save(){
         DataParser parser=new DataParser();
         if(MODE==ADD) {
@@ -198,18 +198,19 @@ public class EditorList extends AppCompatActivity {
             container.setReminder(format.format(reminderDate.getTime()));
             DataBlockManager.updateNotes(container,this);
         }
-
+        Toast.makeText(this, getString(R.string.save), Toast.LENGTH_LONG).show();
         finish();
     }
 
     @Override
-    public boolean onNavigateUp() {
-        Toast.makeText(this,getString(R.string.discard),Toast.LENGTH_LONG).show();
-        return super.onNavigateUp();
+    public boolean onSupportNavigateUp(){
+        Toast.makeText(this,getString(R.string.discard),Toast.LENGTH_SHORT).show();
+        return super.onSupportNavigateUp();
     }
 
-
     private class ListParser implements TextWatcher {
+        boolean editable=true;
+        int start=-1;
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -220,10 +221,19 @@ public class EditorList extends AppCompatActivity {
 
             if(s.length()>start)
                 if(s.charAt(start)=='\n')
-                    pushContents();
+                    this.start=start;
         }
 
         @Override
         public void afterTextChanged(Editable s) {
+
+            if(start>-1&&editable) {
+                editable=false;
+                s.replace(start, s.length(), "");
+                pushContents();
+                start=-1;
+                editable=true;
+            }
         }
-    }}
+    }
+}

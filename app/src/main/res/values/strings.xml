@@ -128,6 +128,8 @@
     <string name="editorMenu_save">Save</string>
     <string name="list_default_title">My Personal List</string>
     <string name="discard">Discarding Changes</string>
+    <string name="save">Saved</string>
+    <string name="marked">Marked as Done</string>
 
     <string name="diaryTitle">Today\'s Diary</string>
 </resources>

@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -40,16 +41,17 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
 
     static final int NOTIFY_POPUP=5;
 
-    private DataBlockManager dataBlockManager;
-    private int mOffsetDays,mPosition;
-    private String mText=null;
-
+    /**
+     * Listener for any interactions from cards.
+     */
     private OnContentInteractionListener mListener;
 
     private ViewRecyclerAdapter viewRecyclerAdapter;
     private  LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
+
     private SimpleDateFormat simpleDateFormat;
+    private Calendar shownDate=Calendar.getInstance();
 
     /**
      * Use this factory method to create a new instance of
@@ -73,7 +75,8 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mPosition = getArguments().getInt(ARG_POSITION);
+            long offset = getArguments().getInt(ARG_POSITION);
+            shownDate.setTimeInMillis(shownDate.getTimeInMillis()+offset*24*60*60*1000);
         }/*
         dataBlockManager=new DataBlockManager(mOffsetDays=(DLMainActivity.COUNT-1-mPosition));*/
         /*dataBlockManager.readPackage();
@@ -98,7 +101,7 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
             recyclerView.setLayoutManager(layoutManager);
             viewRecyclerAdapter = new ViewRecyclerAdapter();
             viewRecyclerAdapter.setAdapterListener(this);
-            viewRecyclerAdapter.setDataBlockContainers(DataBlockManager.readNotes(simpleDateFormat.format(new Date().getTime()),getContext()));
+            viewRecyclerAdapter.setDataBlockContainers(DataBlockManager.readNotes(simpleDateFormat.format(shownDate.getTime()),getContext()));
             recyclerView.setAdapter(viewRecyclerAdapter);
             recyclerView.setNestedScrollingEnabled(true);
             /*

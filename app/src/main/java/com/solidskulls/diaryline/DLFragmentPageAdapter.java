@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+
 /**
  * Created by cijo-saju on 12/1/16.
  *
@@ -15,7 +16,8 @@ public class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return DiaryTextPreview.newInstance(position);
+
+        return DiaryTextPreview.newInstance(position%(DLMainActivity.COUNT/2));
     }
 
     @Override
