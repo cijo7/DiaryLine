@@ -102,7 +102,7 @@ public class DataBlockManager {
         List<DataBlockContainer> dataBlockContainers= new ArrayList<>();
         DataBlockContainer dataBlockContainer;
         try {
-            Cursor c = context.getContentResolver().query(ContentManager.Notes.CONTENT_URI, null, ContentManager.Notes.NOTES_DATE + " LIKE '" + date+ "%'", null, null);
+            Cursor c = context.getContentResolver().query(ContentManager.Notes.CONTENT_URI, null,ContentManager.Notes.NOTES_REMINDER+" LIKE '"+date+"%' OR ("+ContentManager.Notes.NOTES_DATE+" LIKE '"+date+"%' AND reminder='')", null, null);
 
             if(c!=null) {
                 if (c.moveToFirst()) {
@@ -123,7 +123,7 @@ public class DataBlockManager {
                 c.close();
             }else
                 Timber.d("Retrieve Failed");
-            c = context.getContentResolver().query(ContentManager.Entry.CONTENT_URI, null, ContentManager.Entry.ENTRY_DATE + " LIKE '" + date+ "%'", null, null);
+            c = context.getContentResolver().query(ContentManager.Entry.CONTENT_URI, null,ContentManager.Entry.ENTRY_DATE + " LIKE '" + date+ "%'", null, null);
 
             if(c!=null) {
                 if (c.moveToFirst()) {
