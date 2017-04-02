@@ -1,11 +1,11 @@
 # DiaryLine
 DiaryLine is developed as a personal diary for everyone. It currently support Lists, Notes and Journals.
 
-##Lists
+## Lists
 Create a list about anything! No more paid Apps to do the same.
 
-##Journal
+## Journal
 Write about your daily life. 
 
-##Notes
+## Notes
 Take notes on the go. Write about everything you need to care about. 
