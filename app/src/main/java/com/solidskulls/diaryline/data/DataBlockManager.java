@@ -116,7 +116,7 @@ public class DataBlockManager {
                         dataBlockContainer.setReminder(c.getString(c.getColumnIndex(ContentManager.Notes.NOTES_REMINDER)));
                         dataBlockContainer.setTag(c.getString(c.getColumnIndex(ContentManager.Notes.NOTES_TAG)));
                         dataBlockContainer.setId(c.getLong(c.getColumnIndex(ContentManager.Notes._ID)));
-                        if(!dataBlockContainer.IsEmpty())
+                        if(dataBlockContainer.notEmpty())
                             dataBlockContainers.add(dataBlockContainer);
                     } while (c.moveToNext());
 
@@ -136,7 +136,7 @@ public class DataBlockManager {
                         dataBlockContainer.setDate(c.getString(c.getColumnIndex(ContentManager.Entry.ENTRY_DATE)));
                         dataBlockContainer.setTag(AppConstants.DIARY);
                         dataBlockContainer.setId(c.getLong(c.getColumnIndex(ContentManager.Entry._ID)));
-                        if(!dataBlockContainer.IsEmpty())
+                        if(dataBlockContainer.notEmpty())
                             dataBlockContainers.add(dataBlockContainer);
                     } while (c.moveToNext());
                 }

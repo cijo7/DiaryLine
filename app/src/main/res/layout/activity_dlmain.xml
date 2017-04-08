@@ -22,7 +22,6 @@
     <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:id="@+id/dataContainer"
         android:paddingTop="?attr/actionBarSize">
         <com.solidskulls.diaryline.ui.NavigatorView
             android:layout_width="match_parent"

@@ -36,6 +36,8 @@ import java.util.Locale;
 import timber.log.Timber;
 
 public class EditorList extends AppCompatActivity {
+    public static final String CONTENT= "id";
+
     private static final int ADD = 89;
     private static final int UPDATE = 136;
     private RecyclerView recyclerView;
@@ -53,7 +55,7 @@ public class EditorList extends AppCompatActivity {
         Bundle e=getIntent().getExtras();
         if(e!=null){
             MODE=UPDATE;
-            container=e.getParcelable("id");
+            container=e.getParcelable(CONTENT);
         }else {
             MODE=ADD;
         }
@@ -198,7 +200,10 @@ public class EditorList extends AppCompatActivity {
         DataParser parser=new DataParser();
         if(MODE==ADD) {
             container = new DataBlockContainer(title.getText().toString(),
-                    parser.listToText(listRecyclerAdapter.getData()), format.format(new Date().getTime()), format.format(reminderDate.getTime()), AppConstants.LISTS);
+                                                parser.listToText(listRecyclerAdapter.getData()),
+                                                format.format(new Date().getTime()),
+                                                format.format(reminderDate.getTime()),
+                                                AppConstants.LISTS);
             if(container.getTitle().isEmpty())
                 container.setTitle(getString(R.string.list_default_title));
             DataBlockManager.addNotes(container,this);

@@ -110,8 +110,8 @@ public class DataBlockContainer implements Parcelable{
      * Return true when text and date is empty.
      * @return return true if text and is empty
      */
-    boolean IsEmpty(){
-        return (text.isEmpty()&&date.isEmpty());
+    boolean notEmpty(){
+        return (!text.isEmpty() || !date.isEmpty());
     }
 
 

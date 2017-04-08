@@ -1,5 +1,5 @@
 # DiaryLine
-DiaryLine is developed as a personal diary for everyone. It currently support Lists, Notes and Journals.
+DiaryLine is developed as a personal diary for everyone. It currently support creating Lists, Notes and Journals.
 
 ## Lists
 Create a list about anything! No more paid Apps to do the same.

@@ -15,13 +15,6 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-
-    <style name="writtenText">
-        <item name="android:textSize">@dimen/writtenTextSize</item>
-        <item name="android:capitalize">characters</item>
-        <item name="android:typeface">monospace</item>
-        <item name="android:textColor">@color/writtenTextColor</item>
-    </style>
     <style name="funkyButton">
         <item name="android:textColor">@color/buttonTextColor</item>
         <item name="android:background">@color/buttonBGColor</item>

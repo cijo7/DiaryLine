@@ -5,29 +5,13 @@
     <color name="colorAccent">#ffa940</color>
 
     <color name="colorIcon">#fff</color>
-    <color name="writtenTextColor">#000</color>
     <color name="buttonTextColor">#fff</color>
     <color name="buttonBGColor">#FF00AF09</color>
-
-    <color name="iconsLight">#777</color>
 
     <color name="navigationView_background">#f7bf87</color>
     <color name="navigationView_circle">#ed4f0a</color>
     <color name="navigationView_textDate">#ffffff</color>
     <color name="navigationView_textMonthYear">#515151</color>
-
-
-
-    <color name="background1">#df595b</color>
-    <color name="background2">#df595b</color>
-    <color name="background3">#df595b</color>
-    <color name="background4">#df595b</color>
-    <color name="background5">#df595b</color>
-    <color name="background6">#FF3F89B7</color>
-    <color name="background7">#df595b</color>
-    <color name="background8">#FF3F89B7</color>
-    <color name="background9">#FF3F89B7</color>
-    <color name="background10">#FF3F89B7</color>
 
 
     <color name="quoteBlock">#606060</color>

@@ -6,11 +6,11 @@
     android:layout_height="match_parent" android:fitsSystemWindows="true"
     tools:context="com.solidskulls.diaryline.Help">
 
-    <android.support.design.widget.AppBarLayout android:id="@+id/app_bar"
+    <android.support.design.widget.AppBarLayout
         android:fitsSystemWindows="true" android:layout_height="@dimen/app_bar_height"
         android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.CollapsingToolbarLayout android:id="@+id/toolbar_layout"
+        <android.support.design.widget.CollapsingToolbarLayout
             android:fitsSystemWindows="true" android:layout_width="match_parent"
             android:layout_height="match_parent" app:layout_scrollFlags="scroll"
             app:contentScrim="?attr/colorPrimary">

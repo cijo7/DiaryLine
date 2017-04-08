@@ -73,8 +73,6 @@
 
                                                                                                     <!-- About -->
                                                                                                     <!-- Custom TimePicker-->
-    <string name="preference_timePicker_h">Hour</string>
-    <string name="preference_timePicker_m">Minutes</string>
 
     <!--Temp-->
     <string name="pref_ringtone_silent">Silent</string>
@@ -94,23 +92,17 @@
     <string name="notify_button_1">Later</string>
     <string name="notify_button_2">OK</string>
                                                                                                     <!-- Diary Preview Fragment -->
-    <string name="empty">Nothing to display</string>
 
-                                                                                                    <!-- Editor    -->
+    <!-- Editor    -->
     <string name="title_activity_editor">Editor</string>
     <string name="editor_button_1">Done</string>
     <string name="editor_hint">What\'s in your mind</string>
 
-    <string name="push_helper_notification_title_template">Push helper: %1$s</string>
 
-
-
-    <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="signature_reset">Reset</string>
     <string name="author_sign">Author Sign</string>
 
-    <string name="diary_empty_content">Empty Content</string>
     <string name="empty_string">Nothing to Display</string>
     <string name="popup_list">List</string>
     <string name="popup_diary">Diary Entry</string>
@@ -123,8 +115,6 @@
     <string name="editor_list_title">Shopping List</string>
     <string name="editor_list_addText">Buy Bananas</string>
     <string name="editorList_buttonDescription">Add</string>
-    <string name="toast_undo">Undo</string>
-    <string name="toast_text">Marked as done.</string>
     <string name="editorMenu_save">Save</string>
     <string name="list_default_title">My Personal List</string>
     <string name="discard">Discarding Changes</string>

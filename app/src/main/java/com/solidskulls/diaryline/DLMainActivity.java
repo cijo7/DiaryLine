@@ -36,7 +36,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 
     private static int mPosition=COUNT/2;
     public Coordinator mCoordinator;
-    private boolean popped =true;
+    private boolean notPopped =true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,8 +159,8 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 	 * Display the popup
 	 */
     private  void showPopup(){
-        if(popped){//If not popped, then pop
-            popped =false;
+        if(notPopped){//If not notPopped, then pop
+            notPopped =false;
 	        LinearLayout ln=(LinearLayout) findViewById(R.id.popup_buttons);
 	        if (ln!=null)
 	            ln.setVisibility(View.VISIBLE);
@@ -216,7 +216,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
 		        buttons.setAnimation(animation2);
 	        }
         }else {//Lets remove every thing
-            popped =true;
+            notPopped =true;
 
             fab.animate().rotation(0).setDuration(100).start();
 	        LinearLayout ln=(LinearLayout) findViewById(R.id.popup_buttons);
@@ -240,7 +240,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
      */
     private void openListEditor(){
         startActivity(new Intent(this,EditorList.class));
-        if(!popped)
+        if(!notPopped)  //Close popup on exit from activity.
             showPopup();
     }
 
@@ -250,7 +250,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
      */
     private void openListEditor(DataBlockContainer container){
         Intent intent=new Intent(this,EditorList.class);
-        intent.putExtra("id",container);
+        intent.putExtra(EditorList.CONTENT,container);
         startActivity(intent);
     }
 
@@ -263,7 +263,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         intent.putExtra(Editor.EDITOR_MODE, Editor.MODE_ADD);
         intent.putExtra(Editor.EDITOR_TYPE,type);
         startActivity(intent);
-        if(!popped)
+        if(!notPopped)
             showPopup();
     }
 
@@ -313,7 +313,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
                 onDiaryEdit(Editor.DIARY,position);
                 break;
         }
-        if(!popped)
+        if(!notPopped)
             showPopup();
     }
 
