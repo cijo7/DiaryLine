@@ -300,12 +300,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         }
     }
 
-    @Override
-    public void onNavigatorCollapse(boolean collapse) {
-        navigatorView.animate().translationYBy(-EnvironmentVariables.SCREEN_HEIGHT/5).setDuration(500).start();
-    }
-
-    @Override
+	@Override
     public void onItemSelected(DataBlockContainer position) {
         switch (position.getTag()) {
             case AppConstants.LISTS:

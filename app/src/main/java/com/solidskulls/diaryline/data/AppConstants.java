@@ -1,7 +1,7 @@
 package com.solidskulls.diaryline.data;
 
 /**
- * Created by cijo-saju on 4/2/16.
+ * Constants for the App.
  */
 public class AppConstants {
     public static final String NOTES="notes", DIARY="diary",LISTS="lists";

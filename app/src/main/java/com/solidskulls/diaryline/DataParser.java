@@ -28,7 +28,7 @@ public class DataParser {
      * @param strings List of items to be packed.
      * @return Encoded XML string
      */
-    public String listToText(List<String> strings){
+    String listToText(List<String> strings){
         stringBuilder=new StringBuilder();
         stringList=strings;
         stringBuilder.append("<?xml version=\"1.0\"?>")

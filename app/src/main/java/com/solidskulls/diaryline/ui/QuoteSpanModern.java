@@ -19,6 +19,7 @@ package com.solidskulls.diaryline.ui;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.text.Layout;
 import android.text.ParcelableSpan;
@@ -41,6 +42,7 @@ public class QuoteSpanModern implements LeadingMarginSpan, ParcelableSpan {
         mColor = color;
     }
 
+    @SuppressWarnings("unused")
     public QuoteSpanModern(Parcel src) {
         mColor = src.readInt();
     }
@@ -49,8 +51,7 @@ public class QuoteSpanModern implements LeadingMarginSpan, ParcelableSpan {
         return getSpanTypeIdInternal();
     }
 
-    /** @hide */
-    public int getSpanTypeIdInternal() {
+    private int getSpanTypeIdInternal() {
         return 0;
     }
 
@@ -62,8 +63,8 @@ public class QuoteSpanModern implements LeadingMarginSpan, ParcelableSpan {
         writeToParcelInternal(dest, flags);
     }
 
-    /** @hide */
-    public void writeToParcelInternal(Parcel dest, int flags) {
+    @SuppressWarnings("unused")
+    private void writeToParcelInternal(Parcel dest, int flags) {
         dest.writeInt(mColor);
     }
 
@@ -89,4 +90,16 @@ public class QuoteSpanModern implements LeadingMarginSpan, ParcelableSpan {
         p.setStyle(style);
         p.setColor(color);
     }
+
+    public static final Parcelable.Creator CREATOR = new Creator() {
+        @Override
+        public Object createFromParcel(Parcel source) {
+            return null;
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new Object[0];
+        }
+    };
 }

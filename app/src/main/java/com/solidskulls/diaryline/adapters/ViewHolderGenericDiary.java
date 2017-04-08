@@ -11,11 +11,11 @@ import com.solidskulls.diaryline.ui.DateView;
  * Created by cijo-saju on 24/1/16.
  *
  */
-public class ViewHolderGenericDiary extends VewHolderGeneric {
+class ViewHolderGenericDiary extends VewHolderGeneric {
 
     private DateView dateView;
     private TextView title,text;
-    public ViewHolderGenericDiary(View itemView) {
+    ViewHolderGenericDiary(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
         dateView=(DateView)itemView.findViewById(R.id.card_diary_date);

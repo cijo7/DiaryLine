@@ -147,25 +147,35 @@ public class HtmlSpannableParser {
             next = text.nextSpanTransition(i, end, QuoteSpan.class);
             QuoteSpan[] quotes = text.getSpans(i, next, QuoteSpan.class);
 
-            for (QuoteSpan quote : quotes) {
+            for (@SuppressWarnings("unused")
+                    QuoteSpan quote : quotes) {
                 out.append("<blockquote>");
             }
 
             withinBlockQuote(out, text, i, next);
 
-            for (QuoteSpan quote : quotes) {
+            for (@SuppressWarnings("unused")
+                    QuoteSpan quote : quotes) {
                 out.append("</blockquote>\n");
             }
         }
     }
 
-    private static String getOpenParaTagWithDirection(Spanned text, int start, int end) {/*
-        final int len = end - start;
+    @SuppressWarnings("unused")
+    private static String getOpenParaTagWithDirection(Spanned text, int start, int end) {
+
+     /*   final int len = end - start;
         final byte[] levels = ArrayUtils.newUnpaddedByteArray(len);
         final char[] buffer = TextUtils.obtain(len);
         TextUtils.getChars(text, start, end, buffer, 0);
 
-        int paraDir = AndroidBidi.bidi(Layout.DIR_REQUEST_DEFAULT_LTR, buffer, levels, len,false *//* no info *//*);*/
+        final int DIR_REQUEST_DEFAULT_LTR = 2; // Layout.DIR_REQUEST_DEFAULT_LTR;
+        final int DIR_REQUEST_DEFAULT_RTL = -2; // Layout.DIR_REQUEST_DEFAULT_RTL;
+        final int DIR_REQUEST_LTR = 1; // Layout.DIR_REQUEST_LTR;
+        final int DIR_REQUEST_RTL = -1; // Layout.DIR_REQUEST_RTL;
+
+        int paraDir = AndroidBidi.bidi(DIR_REQUEST_DEFAULT_LTR, buffer, levels, len,false);*/
+
         // FIXME: 23/1/16 Unidirectional text is only supported.
         switch(Layout.DIR_LEFT_TO_RIGHT) {
             case Layout.DIR_RIGHT_TO_LEFT:
@@ -372,5 +382,31 @@ public class HtmlSpannableParser {
             }
         }
     }
+   /* private class AndroidBidi {
+
+        public static int bidi(int dir, char[] chs, byte[] chInfo, int n, boolean haveInfo) {
+            if (chs == null || chInfo == null) {
+                throw new NullPointerException();
+            }
+
+            if (n < 0 || chs.length < n || chInfo.length < n) {
+                throw new IndexOutOfBoundsException();
+            }
+
+            switch(dir) {
+                case Layout.DIR_REQUEST_LTR: dir = 0; break;
+                case Layout.DIR_REQUEST_RTL: dir = 1; break;
+                case Layout.DIR_REQUEST_DEFAULT_LTR: dir = -2; break;
+                case Layout.DIR_REQUEST_DEFAULT_RTL: dir = -1; break;
+                default: dir = 0; break;
+            }
+
+            int result = runBidi(dir, chs, chInfo, n, haveInfo);
+            result = (result & 0x1) == 0 ? Layout.DIR_LEFT_TO_RIGHT : Layout.DIR_RIGHT_TO_LEFT;
+            return result;
+        }
+
+        private native static int runBidi(int dir, char[] chs, byte[] chInfo, int n, boolean haveInfo);
+    }*/
 }
 

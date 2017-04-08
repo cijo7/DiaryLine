@@ -23,10 +23,10 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
     private String undoString;
     private RecyclerInteraction listener;
 
-    public class ListViewHolder extends RecyclerView.ViewHolder{
+    class ListViewHolder extends RecyclerView.ViewHolder{
 
         private CheckBox text;
-        public ListViewHolder(View itemView) {
+        ListViewHolder(View itemView) {
             super(itemView);
             text=(CheckBox)itemView.findViewById(R.id.editorList_checkbox);
         }
@@ -63,7 +63,7 @@ public class ListRecyclerAdapter extends RecyclerView.Adapter<ListRecyclerAdapte
         notifyItemInserted(arrayList.size());
     }
 
-    public void removeTextView(int index){
+    private void removeTextView(int index){
         undoString=arrayList.get(index);
         arrayList.remove(index);
         notifyItemRemoved(index);

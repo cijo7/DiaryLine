@@ -40,7 +40,6 @@ public class EditorList extends AppCompatActivity {
     private static final int UPDATE = 136;
     private RecyclerView recyclerView;
     private ListRecyclerAdapter listRecyclerAdapter;
-    private LinearLayoutManager linearLayoutManager;
 
     private EditText title,add;
     private DataBlockContainer container;
@@ -137,7 +136,7 @@ public class EditorList extends AppCompatActivity {
         }
         else
             listRecyclerAdapter=new ListRecyclerAdapter();
-        linearLayoutManager=new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listRecyclerAdapter);
         //Hide if we don't have any contents.

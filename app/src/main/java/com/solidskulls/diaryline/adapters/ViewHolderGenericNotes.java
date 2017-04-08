@@ -10,9 +10,9 @@ import com.solidskulls.diaryline.Utility.HtmlSpannableParser;
  * Created by cijo-saju on 24/1/16.
  * View Holder for general notes
  */
-public class ViewHolderGenericNotes extends VewHolderGeneric {
+class ViewHolderGenericNotes extends VewHolderGeneric {
     private TextView title,notes;
-    public ViewHolderGenericNotes(View itemView) {
+    ViewHolderGenericNotes(View itemView) {
         super(itemView);
         title=(TextView)itemView.findViewById(R.id.card_notes_title);
         notes=(TextView)itemView.findViewById(R.id.card_notes_text);

@@ -1,6 +1,7 @@
 package com.solidskulls.diaryline;
 
-import android.app.Activity;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class NotifyTasks extends Fragment {
      * @param act The action to take place when clicked ok.
      * @return A new instance of fragment NotifyTasks.
      */
-
+    @SuppressWarnings("unused")
     public static NotifyTasks newInstance(String msg, String act) {
         NotifyTasks fragment = new NotifyTasks();
         Bundle args = new Bundle();
@@ -110,12 +111,12 @@ public class NotifyTasks extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnFragmentInteractionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
@@ -136,7 +137,7 @@ public class NotifyTasks extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    interface OnFragmentInteractionListener {
         void onNotifyInteraction(String action);
     }
 

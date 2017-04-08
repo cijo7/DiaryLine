@@ -21,18 +21,17 @@ import timber.log.Timber;
  * Created by cijo-saju on 24/1/16.
  *
  */
-public class ViewHolderGenericLists extends VewHolderGeneric {
+class ViewHolderGenericLists extends VewHolderGeneric {
 
     private TextView title;
-    private CheckBox checkBox;
     private TextView lists;
 
 
-    public ViewHolderGenericLists(View itemView) {
+    ViewHolderGenericLists(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
         title=(TextView)itemView.findViewById(R.id.card_list_title);
-        checkBox=(CheckBox)itemView.findViewById(R.id.card_list_checkbox);
+        CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.card_list_checkbox);
         lists=(TextView)itemView.findViewById(R.id.card_listView);
 
         checkBox.setOnClickListener(new View.OnClickListener() {

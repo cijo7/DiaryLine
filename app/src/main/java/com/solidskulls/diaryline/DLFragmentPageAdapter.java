@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * Created by cijo-saju on 12/1/16.
  *
  */
-public class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
-    public DLFragmentPageAdapter(FragmentManager fm) {
+class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
+    DLFragmentPageAdapter(FragmentManager fm) {
         super(fm);
     }
 

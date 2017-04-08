@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -35,7 +34,6 @@ class PushNotificationHelper {
      */
     static void notify(final Context context,
                        final String ticker, String title, String text, final int number) {
-        final Resources res = context.getResources();
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -111,6 +109,7 @@ class PushNotificationHelper {
      * {@link #notify(Context, String, String, String, int)}.
      */
     @TargetApi(Build.VERSION_CODES.ECLAIR)
+    @SuppressWarnings("unused")
     private static void cancel(final Context context) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);

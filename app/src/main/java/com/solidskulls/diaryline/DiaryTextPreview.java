@@ -38,15 +38,11 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
     private static final String ARG_POSITION = "position";
     private static Bitmap signBitMap=null;
 
-    static final int NOTIFY_POPUP=5;
-
     /**
      * Listener for any interactions from cards.
      */
     private OnContentInteractionListener mListener;
 
-    private ViewRecyclerAdapter viewRecyclerAdapter;
-    private  LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
 
     private SimpleDateFormat simpleDateFormat;
@@ -96,9 +92,9 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
         View view=getView();
         if(view!=null) {
             recyclerView = (RecyclerView) view.findViewById(R.id.content_recycler);
-            layoutManager = new LinearLayoutManager(getContext());
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
-            viewRecyclerAdapter = new ViewRecyclerAdapter();
+            ViewRecyclerAdapter viewRecyclerAdapter = new ViewRecyclerAdapter();
             viewRecyclerAdapter.setAdapterListener(this);
             viewRecyclerAdapter.setDataBlockContainers(DataBlockManager.readNotes(simpleDateFormat.format(shownDate.getTime()),getContext()));
             recyclerView.setAdapter(viewRecyclerAdapter);
@@ -170,11 +166,6 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
      * The interface to Activity
      */
     interface OnContentInteractionListener {
-        /**
-         * Called when Navigator View needs to be collapsed.
-         * @param collapse true when view needs to be collapsed.
-         */
-        void onNavigatorCollapse(boolean collapse);
 
         /**
          * Called when an item is selected from the list.
@@ -184,6 +175,7 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
     }
 
 
+    @SuppressWarnings("unused")
     public static boolean updateBitmap(Context context){
         FileInputStream fileInputStream=null;
         try {

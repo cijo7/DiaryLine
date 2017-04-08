@@ -19,7 +19,6 @@ import com.solidskulls.diaryline.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 /**
  * Created by cijo-saju on 17/1/16.
@@ -42,7 +41,6 @@ public class NavigatorView extends View  {
     private boolean[] mSwipeRight;
     private int mCount=0 , animateStackCount =0,animateUnStackCount=0;
     private ValueAnimator animate;
-    private int lastColorCode=-1;
     private float textSize;
     private SimpleDateFormat simpleDateFormat,simpleDate;
     private Date mDateSetter;
@@ -261,6 +259,7 @@ public class NavigatorView extends View  {
      * Collapse or ReEnter the view.
      * @param collapse True if view is collapsing
      */
+    @SuppressWarnings("unused")
     public void collapseView(boolean collapse){
         ValueAnimator animator;
         if(collapse)
@@ -367,46 +366,6 @@ public class NavigatorView extends View  {
 
 
     /**
-     * Returns a Random Color from a list of Colors Chosen.
-     * @return int Color
-     */
-    private int getRandomColor(){
-    Random random=new Random();
-    int r;
-        if ((r=random.nextInt(10))==lastColorCode){
-            if(r<9)
-                r++;
-            else
-                r=0;
-        }
-        lastColorCode=r;
-        switch (r){
-            case 0:
-                return ContextCompat.getColor(getContext(), R.color.background1);
-            case 1:
-                return ContextCompat.getColor(getContext(), R.color.background2);
-            case 2:
-                return ContextCompat.getColor(getContext(), R.color.background3);
-            case 3:
-                return ContextCompat.getColor(getContext(), R.color.background4);
-            case 4:
-                return ContextCompat.getColor(getContext(), R.color.background5);
-            case 5:
-                return ContextCompat.getColor(getContext(), R.color.background6);
-            case 6:
-                return ContextCompat.getColor(getContext(), R.color.background7);
-            case 7:
-                return ContextCompat.getColor(getContext(), R.color.background8);
-            case 8:
-                return ContextCompat.getColor(getContext(), R.color.background9);
-            case 9:
-                return ContextCompat.getColor(getContext(), R.color.background10);
-            default:
-                return ContextCompat.getColor(getContext(), R.color.background1);
-        }
-    }
-
-    /**
      * Updates the displayed Month
      * @param string Updated Month and Year.
      */
@@ -417,7 +376,7 @@ public class NavigatorView extends View  {
     /**
      * Class implements a circular Array to be manipulated by animation
      */
-    public class CircularArrayString {
+    private class CircularArrayString {
         private String[] array;
         private int index;
         private float[] textCentreY;
@@ -441,7 +400,7 @@ public class NavigatorView extends View  {
          * Reset the data with in the
          * @param strings Strings to add to new Queue.
          */
-        public void refresh(String... strings){
+        void refresh(String... strings){
             array=strings;
             index=1;//Not 0. 0is the Update array
             height=HEIGHT/2;
@@ -460,14 +419,14 @@ public class NavigatorView extends View  {
          * @param i Index of String in queue.
          * @return String Value
          */
-        public String getString(int i){
+        String getString(int i){
             return array[(index+i)%(array.length)];
         }
 
         /**
          * Pushes the circular array forward.
          */
-        public void pushBackward(){
+        void pushBackward(){
             index--;
             if(index<0)
                 index=array.length-1;
@@ -476,7 +435,7 @@ public class NavigatorView extends View  {
         /**
          * Pushes the circular array forward
          */
-        public void pushForward(){
+        void pushForward(){
             index++;
             if(index>(array.length-1))
                 index=0;
@@ -487,7 +446,7 @@ public class NavigatorView extends View  {
          * @param i The index of Text Who's Vertical coordinates you need.
          * @return Returns the Y coordinates of Text
          */
-        public float getVerticalCentre(int i){
+        float getVerticalCentre(int i){
             return textCentreY[(index+i)%(array.length)];
         }
 
@@ -496,7 +455,7 @@ public class NavigatorView extends View  {
          * @param i The Up Scale Index
          * @param j The Down Scale Index
          */
-        public void reCalculateBounds(int i,int j){
+        void reCalculateBounds(int i, int j){
             int idUp=(index+i)%(array.length);
             int idDown=(index+j)%(array.length);
             mPaintTextToUp.getTextBounds(array[idUp],0,array[idUp].length(),tmp);
@@ -508,7 +467,7 @@ public class NavigatorView extends View  {
          * Adds the String to Writing head of Queue
          * @param value Value of String to Display
          */
-        public void update(String value){
+        void update(String value){
             int head;
             if (index>0)
                 head=index-1;

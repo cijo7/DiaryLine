@@ -21,12 +21,13 @@ public class DataBlockManager {
 
    // private static DataBlockManager dataBlockManagerInstance=new DataBlockManager();
 
-    static Uri lastUri;
+    private static Uri lastUri;
 
 
     /**
      * Creates a Heart DataBlock which is responsible for Initiating purposes.
      */
+    @SuppressWarnings("unused")
     public void init(Context context){
    /*     contentManager =new ContentManager();
 

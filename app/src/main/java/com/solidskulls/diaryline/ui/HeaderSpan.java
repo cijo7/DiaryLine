@@ -11,12 +11,14 @@ import android.text.style.MetricAffectingSpan;
  */
 public class HeaderSpan extends MetricAffectingSpan  {
     private final float mProportion;
+    @SuppressWarnings("unused")
     private static final float H1 = 1.5f,H2=1.4f,H3=1.3f,H4=1.2f,H5=1.1f,H6=1f;
 
 
     public HeaderSpan(){
         mProportion=H1;
     }
+    @SuppressWarnings("unused")
     public HeaderSpan(float level){
         if(level<=H1&&level>=H6)
             mProportion=level;

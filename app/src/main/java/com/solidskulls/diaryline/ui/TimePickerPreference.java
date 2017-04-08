@@ -11,6 +11,8 @@ import android.widget.NumberPicker;
 
 import com.solidskulls.diaryline.R;
 
+import java.util.Locale;
+
 import timber.log.Timber;
 
 /**
@@ -18,11 +20,6 @@ import timber.log.Timber;
  * Class used as a Settings TimePicker
  */
 public class TimePickerPreference extends DialogPreference{
-    static int MAX_HOUR =12;
-    static int MIN_HOUR=1;
-    static int MIN_MIN=0;
-    static int MAX_MINUTES=59;
-    static String TIME="5:0 AM";
     /**
      * flagBind possible values
      * -1   :   Indicates Not Bind
@@ -55,7 +52,9 @@ public class TimePickerPreference extends DialogPreference{
             flagBind=0;
 
         mNumberPickerHour =(NumberPicker)view.findViewById(R.id.preference_numberPicker_hour);
+        int MIN_HOUR = 1;
         mNumberPickerHour.setMinValue(MIN_HOUR);
+        int MAX_HOUR = 12;
         mNumberPickerHour.setMaxValue(MAX_HOUR);
         mNumberPickerHour.setWrapSelectorWheel(true);
         mNumberPickerHour.setValue(mHour);
@@ -68,12 +67,14 @@ public class TimePickerPreference extends DialogPreference{
         mNumberPickerHour.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int value) {
-                return String.format("%02d", value);
+                return String.format(Locale.ENGLISH,"%02d", value);
             }
         });
 
         mNumberPickerMinutes =(NumberPicker)view.findViewById(R.id.preference_numberPicker_minute);
+        int MIN_MIN = 0;
         mNumberPickerMinutes.setMinValue(MIN_MIN);
+        int MAX_MINUTES = 59;
         mNumberPickerMinutes.setMaxValue(MAX_MINUTES);
         mNumberPickerMinutes.setWrapSelectorWheel(true);
         mNumberPickerMinutes.setValue(mMinutes);
@@ -86,7 +87,7 @@ public class TimePickerPreference extends DialogPreference{
         mNumberPickerMinutes.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int value) {
-                return String.format("%02d", value);
+                return String.format(Locale.ENGLISH,"%02d", value);
             }
         });
 
@@ -114,7 +115,8 @@ public class TimePickerPreference extends DialogPreference{
             mHour= mNumberPickerHour.getValue();
             mMinutes= mNumberPickerMinutes.getValue();
             mAM=mMeridian.getValue()==0;
-            mTime=String.format("%02d",mHour) + ":" + String.format("%02d",mMinutes)+" "+(mAM?"AM":"PM");
+            mTime=String.format(Locale.ENGLISH,"%02d",mHour) + ":"
+                    + String.format(Locale.ENGLISH,"%02d",mMinutes)+" "+(mAM?"AM":"PM");
             persistString(mTime);
             callChangeListener(mTime);
         }else{
@@ -132,6 +134,7 @@ public class TimePickerPreference extends DialogPreference{
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         if (restorePersistedValue) {
+            String TIME = "5:0 AM";
             mTime = this.getPersistedString(TIME);
         } else {
             mTime=(String )defaultValue;
@@ -233,11 +236,11 @@ public class TimePickerPreference extends DialogPreference{
         int min;
         boolean am;
 
-        public SavedState(Parcelable superState) {
+        SavedState(Parcelable superState) {
             super(superState);
         }
 
-        public SavedState(Parcel source) {
+        SavedState(Parcel source) {
             super(source);
             // Get the current preference's value
             hour = source.readInt();  // Change this to read the appropriate data type

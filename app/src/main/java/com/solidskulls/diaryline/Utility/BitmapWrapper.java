@@ -27,13 +27,13 @@ public class BitmapWrapper {
         fileName=filename;
     }
 
-    public int getReqWidth() {
+    int getReqWidth() {
         return reqWidth;
     }
 
 
 
-    public Bitmap getBitmap() {
+    Bitmap getBitmap() {
         return bitmap;
     }
 
@@ -41,10 +41,10 @@ public class BitmapWrapper {
         return mContext;
     }
 
-    public String getFileName() {
+    String getFileName() {
         return fileName;
     }
-    public void recycleBitmap(){
+    void recycleBitmap(){
         if(bitmap!=null)
         bitmap.recycle();
     }
