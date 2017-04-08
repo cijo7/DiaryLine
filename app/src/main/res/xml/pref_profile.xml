@@ -4,7 +4,7 @@
         android:key="@string/pref_profile_name"
         android:title="@string/pref_profile_name_title"
         android:hint="@string/pref_profile_name_hint"
-        android:defaultValue=""
+        android:defaultValue="false"
         android:inputType="textCapWords"
         android:maxLines="1"
         />

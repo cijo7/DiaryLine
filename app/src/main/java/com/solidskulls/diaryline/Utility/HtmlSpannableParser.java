@@ -42,7 +42,7 @@ public class HtmlSpannableParser {
 
     /**
      * Returns an HTML representation of the provided Spanned text. A best effort is
-     * made to add HTML tags corresponding to spans. Also note that HTML metacharacters
+     * made to add HTML tags corresponding to spans. Also note that HTML meta characters
      * (such as "&lt;" and "&amp;") within the input text are escaped.
      *
      * @param text input text to convert
@@ -56,7 +56,7 @@ public class HtmlSpannableParser {
 
     public static Spanned toSpannable(String string){
         SpannableStringBuilder builder=new SpannableStringBuilder();
-        int start=0,end=0;
+        int start=0,end;
         try {
             XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
             XmlPullParser parser=factory.newPullParser();
@@ -151,7 +151,7 @@ public class HtmlSpannableParser {
                 out.append("<blockquote>");
             }
 
-            withinBlockquote(out, text, i, next);
+            withinBlockQuote(out, text, i, next);
 
             for (QuoteSpan quote : quotes) {
                 out.append("</blockquote>\n");
@@ -176,7 +176,7 @@ public class HtmlSpannableParser {
         }
     }
 
-    private static void withinBlockquote(StringBuilder out, Spanned text,
+    private static void withinBlockQuote(StringBuilder out, Spanned text,
                                          int start, int end) {
         out.append(getOpenParaTagWithDirection(text, start, end));
 
@@ -354,8 +354,8 @@ public class HtmlSpannableParser {
                     char d = text.charAt(i + 1);
                     if (d >= 0xDC00 && d <= 0xDFFF) {
                         i++;
-                        int codepoint = 0x010000 | (int) c - 0xD800 << 10 | (int) d - 0xDC00;
-                        out.append("&#").append(codepoint).append(";");
+                        int codePoint = 0x010000 | (int) c - 0xD800 << 10 | (int) d - 0xDC00;
+                        out.append("&#").append(codePoint).append(";");
                     }
                 }
             } else if (c > 0x7E || c < ' ') {

@@ -83,7 +83,7 @@ public class DateView extends View {
 
     /**
      * Sets the display date of diary.
-     * @param str Date string seperated by spaces.
+     * @param str Date string separated by spaces.
      */
     public void setDate(String str){
         String[] arr=str.split(" ");

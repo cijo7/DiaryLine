@@ -30,7 +30,7 @@ public class ContentManager extends ContentProvider {
      *
      * Table columns are :ID,TITLE,TEXT,TAG,DATE,REMINDER
      */
-    public static abstract class Notes implements BaseColumns{
+    static abstract class Notes implements BaseColumns{
          static final String TABLE_NAME ="tbNotes";
         /**
          * Title of note. This cannot be null.<br/>
@@ -80,7 +80,7 @@ public class ContentManager extends ContentProvider {
      *
      *l Table columns are: ID,NAME,ICON,COLOR.
      */
-    public static abstract class Tags implements BaseColumns{
+    static abstract class Tags implements BaseColumns{
         private static final String TABLE_NAME="tbTags";
         /**
          * Name of the tag.<br/>
@@ -115,7 +115,7 @@ public class ContentManager extends ContentProvider {
      *
      * Table columns are: TEXT,DATE
      */
-    public static abstract class Entry implements BaseColumns{
+    static abstract class Entry implements BaseColumns{
         private static final String TABLE_NAME="tbEntry";
         /**
          * Text of the diary entry. <br/>
@@ -195,7 +195,7 @@ public class ContentManager extends ContentProvider {
     public boolean onCreate() {
         Context context = getContext();
         DataBaseManagerHelper dbHelper = new DataBaseManagerHelper(context);
-        /**
+        /*
          * Create a write able database which will trigger its
          * creation if it doesn't already exist.
          */

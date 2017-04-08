@@ -7,8 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -19,7 +17,7 @@ import android.support.v4.app.NotificationCompat;
  * This class makes heavy use of the {@link NotificationCompat.Builder} helper
  * class to create notifications in a backward-compatible way.
  */
-public class PushNotificationHelper {
+class PushNotificationHelper {
     /**
      * The unique identifier for this type of notification.
      */
@@ -35,12 +33,9 @@ public class PushNotificationHelper {
      *
      * @see #cancel(Context)
      */
-    public static void notify(final Context context,
-                              final String ticker,String title,String text, final int number) {
+    static void notify(final Context context,
+                       final String ticker, String title, String text, final int number) {
         final Resources res = context.getResources();
-
-
-
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -108,11 +103,7 @@ public class PushNotificationHelper {
     private static void notify(final Context context, final Notification notification) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            nm.notify(NOTIFICATION_TAG, 0, notification);
-        } else {
-            nm.notify(NOTIFICATION_TAG.hashCode(), notification);
-        }
+        nm.notify(NOTIFICATION_TAG, 0, notification);
     }
 
     /**
@@ -120,13 +111,9 @@ public class PushNotificationHelper {
      * {@link #notify(Context, String, String, String, int)}.
      */
     @TargetApi(Build.VERSION_CODES.ECLAIR)
-    public static void cancel(final Context context) {
+    private static void cancel(final Context context) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            nm.cancel(NOTIFICATION_TAG, 0);
-        } else {
-            nm.cancel(NOTIFICATION_TAG.hashCode());
-        }
+        nm.cancel(NOTIFICATION_TAG, 0);
     }
 }

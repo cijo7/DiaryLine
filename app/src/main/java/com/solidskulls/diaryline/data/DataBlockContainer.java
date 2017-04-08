@@ -48,7 +48,7 @@ public class DataBlockContainer implements Parcelable{
         this.reminder=reminder;
         this.tag = tag;
     }
-    public DataBlockContainer(Parcel in){
+    private DataBlockContainer(Parcel in){
         String[] str=new String[5];
         in.readStringArray(str);
         title=str[0];
@@ -108,9 +108,9 @@ public class DataBlockContainer implements Parcelable{
 
     /**
      * Return true when text and date is empty.
-     * @return
+     * @return return true if text and is empty
      */
-    public boolean IsEmpty(){
+    boolean IsEmpty(){
         return (text.isEmpty()&&date.isEmpty());
     }
 

@@ -20,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import timber.log.Timber;
@@ -170,7 +169,7 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
     /**
      * The interface to Activity
      */
-    public interface OnContentInteractionListener {
+    interface OnContentInteractionListener {
         /**
          * Called when Navigator View needs to be collapsed.
          * @param collapse true when view needs to be collapsed.
@@ -178,7 +177,7 @@ public class DiaryTextPreview extends Fragment implements ViewRecyclerAdapter.Ad
         void onNavigatorCollapse(boolean collapse);
 
         /**
-         * Called when an item is selscted from the list.
+         * Called when an item is selected from the list.
          * @param id row id
          */
         void onItemSelected(DataBlockContainer id);

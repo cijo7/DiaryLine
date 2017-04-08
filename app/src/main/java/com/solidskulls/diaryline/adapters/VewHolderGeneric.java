@@ -7,9 +7,9 @@ import android.view.View;
  * Created by cijo-saju on 24/1/16.
  * A dummy class to be parent and provide common methods.
  */
-public abstract class VewHolderGeneric extends RecyclerView.ViewHolder implements View.OnClickListener{
+abstract class VewHolderGeneric extends RecyclerView.ViewHolder implements View.OnClickListener{
     private HolderInteraction listener;
-    public VewHolderGeneric(View itemView) {
+    VewHolderGeneric(View itemView) {
         super(itemView);
     }
 
@@ -17,7 +17,7 @@ public abstract class VewHolderGeneric extends RecyclerView.ViewHolder implement
      * <p>
      *     Add the date of creation of diary entry ,notes or lists.
      * </p>
-     * @param milliSec Millise
+     * @param date date
      */
     public abstract void setDate(String date);
     /**
@@ -38,10 +38,10 @@ public abstract class VewHolderGeneric extends RecyclerView.ViewHolder implement
             listener.onItemClick(getAdapterPosition());
     }
 
-    public void setListener(HolderInteraction listener){
+    void setListener(HolderInteraction listener){
         this.listener=listener;
     }
-    public interface HolderInteraction{
+    interface HolderInteraction{
         void onItemClick(int position);
     }
 }

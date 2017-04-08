@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +17,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -74,12 +74,14 @@ public class EditorList extends AppCompatActivity {
         add=(EditText)findViewById(R.id.editorList_addText);
         add.addTextChangedListener(new ListParser());
         ImageButton buttonAdd=(ImageButton)findViewById(R.id.editorList_addButton);
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               pushContents();
-            }
-        });
+        if (buttonAdd != null) {
+            buttonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   pushContents();
+                }
+            });
+        }
         reminderDate=Calendar.getInstance();
         final ImageButton reminder=(ImageButton)findViewById(R.id.editorList_reminder);
         final TextView reminderText=(TextView) findViewById(R.id.editorList_reminder_text);
@@ -87,38 +89,44 @@ public class EditorList extends AppCompatActivity {
             try {
                 reminderDate.setTime(format.parse(container.getReminder()));
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, HH:mm a", Locale.getDefault());
-                reminderText.setText(simpleDateFormat.format(reminderDate.getTime()));
+                if (reminderText != null) {
+                    reminderText.setText(simpleDateFormat.format(reminderDate.getTime()));
+                }
             } catch (ParseException e) {
                 Timber.d(e, "Unable to parse reminder.");
             }
         }
-        reminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final DatePickerDialog date;
-                final TimePickerDialog time;
+        if (reminder != null) {
+            reminder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final DatePickerDialog date;
+                    final TimePickerDialog time;
 
-                time=new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        reminderDate.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                        reminderDate.set(Calendar.MINUTE,minute);
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MMM dd, HH:mm a",Locale.getDefault());
-                        reminderText.setText(simpleDateFormat.format(reminderDate.getTime()));
-                    }
-                },reminderDate.get(Calendar.HOUR_OF_DAY),reminderDate.get(Calendar.MINUTE),false);
-                date=new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        reminderDate.set(Calendar.YEAR,year);
-                        reminderDate.set(Calendar.MONTH,monthOfYear);
-                        reminderDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                        time.show();
-                    }
-                }, reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH), reminderDate.get(Calendar.DAY_OF_MONTH));
-                date.show();
-            }
-        });
+                    time=new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            reminderDate.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                            reminderDate.set(Calendar.MINUTE,minute);
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MMM dd, HH:mm a",Locale.getDefault());
+                            if (reminderText != null) {
+                                reminderText.setText(simpleDateFormat.format(reminderDate.getTime()));
+                            }
+                        }
+                    },reminderDate.get(Calendar.HOUR_OF_DAY),reminderDate.get(Calendar.MINUTE),false);
+                    date=new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            reminderDate.set(Calendar.YEAR,year);
+                            reminderDate.set(Calendar.MONTH,monthOfYear);
+                            reminderDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                            time.show();
+                        }
+                    }, reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH), reminderDate.get(Calendar.DAY_OF_MONTH));
+                    date.show();
+                }
+            });
+        }
 
 
         recyclerView=(RecyclerView)findViewById(R.id.editorList_recycler);
@@ -135,18 +143,21 @@ public class EditorList extends AppCompatActivity {
         //Hide if we don't have any contents.
         if(listRecyclerAdapter.getItemCount()==0)
             recyclerView.setVisibility(View.GONE);
-        /**
+        /*
          * Implement the recycler call backs.
          */
         listRecyclerAdapter.setInteractionListener(new ListRecyclerAdapter.RecyclerInteraction() {
             @Override
             public void showUndoNotification(final int index) {
-                Snackbar.make(findViewById(R.id.editorList_layout),getString(R.string.marked), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listRecyclerAdapter.undoRemoval(index);
-                    }
-                }).show();
+                RelativeLayout rl=(RelativeLayout) findViewById(R.id.editorList_layout);
+                if (rl != null) {
+                    Snackbar.make(rl,getString(R.string.marked), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listRecyclerAdapter.undoRemoval(index);
+                        }
+                    }).show();
+                }
             }
         });
     }

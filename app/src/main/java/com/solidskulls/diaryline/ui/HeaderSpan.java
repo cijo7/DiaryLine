@@ -2,8 +2,6 @@ package com.solidskulls.diaryline.ui;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.Parcel;
-import android.text.ParcelableSpan;
 import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 
@@ -39,7 +37,7 @@ public class HeaderSpan extends MetricAffectingSpan  {
 
     /**
      * The h tag level
-     * @return
+     * @return tag level
      */
     public int getLevel(){
         return  (int)((1.6f-mProportion)*10);

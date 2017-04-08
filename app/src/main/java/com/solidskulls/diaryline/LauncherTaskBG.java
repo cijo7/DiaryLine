@@ -28,7 +28,7 @@ public class LauncherTaskBG extends BroadcastReceiver {
         }
         // FIXME: 20/1/16 On works when app is open @priority(100)
         PushNotificationHelper.notify(context, "Reminder", "Write your today's diary", "Whats in your mind today?", 1);
-        setAlarm(context);// TODO: 26/1/16 Don't set alarm if diary entry alredy added
+        setAlarm(context);// TODO: 26/1/16 Don't set alarm if diary entry already added
 
 
     }
@@ -81,8 +81,8 @@ public class LauncherTaskBG extends BroadcastReceiver {
 
 
 }
-/**
- *
+/*
+ * FIXME: 8/4/17
  * Possible Bugs:
  * The Pending intent may get updated from other places and may poses a problem for consecutive alarm set. A rare case situation. @priority low
  */
