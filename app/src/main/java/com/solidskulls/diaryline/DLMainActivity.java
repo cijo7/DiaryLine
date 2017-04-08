@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -55,7 +56,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         navigatorView=(NavigatorView)findViewById(R.id.navigator_view);
         dlFragmentPageAdapter=new DLFragmentPageAdapter(getSupportFragmentManager());
 
-        mCoordinator=new Coordinator();
+        //mCoordinator=new Coordinator();
     }
     @Override
     public void onStart(){
@@ -64,7 +65,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         EnvironmentVariables.initialise(this);
         navigatorView.navigatorViewInIt(EnvironmentVariables.SCREEN_WIDTH, EnvironmentVariables.SCREEN_HEIGHT);//Initialise navigation view
 
-        navigatorView.setNavigationData(Calendar.getInstance().getTimeInMillis());
+        navigatorView.setNavigationData(Calendar.getInstance().getTimeInMillis() +(mPosition%(COUNT/2))*24*60*60*1000);
 
         viewPager.setAdapter(dlFragmentPageAdapter);/*
         viewPager.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -154,12 +155,16 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         DiaryTextPreview.recycleBitmap();//Recycle the static bitmap. Just in case.
     }
 
-
+	/**
+	 * Display the popup
+	 */
     private  void showPopup(){
         if(popped){//If not popped, then pop
             popped =false;
-            findViewById(R.id.popup_buttons).setVisibility(View.VISIBLE);
-            /**
+	        LinearLayout ln=(LinearLayout) findViewById(R.id.popup_buttons);
+	        if (ln!=null)
+	            ln.setVisibility(View.VISIBLE);
+            /*
              * Lets add listeners to the buttons.
              */
 
@@ -170,42 +175,63 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
             fab.animate().rotation(45).setDuration(300).start();
 
             buttons=(TextView)findViewById(R.id.popup_list);
-            buttons.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openListEditor();
-                }
-            });
-            animation.setStartOffset(100);
-            buttons.setAnimation(animation);
+	        if (buttons != null) {
+		        buttons.setOnClickListener(new View.OnClickListener() {
+		            @Override
+		            public void onClick(View v) {
+		                openListEditor();
+		            }
+		        });
+	        }
+	        animation.setStartOffset(100);
+	        if (buttons != null) {
+		        buttons.setAnimation(animation);
+	        }
 
-            buttons=(TextView)findViewById(R.id.popup_notes);
-            buttons.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onDiaryEdit(Editor.NOTES);
-                }
-            });
-            animation1.setStartOffset(200);
-            buttons.setAnimation(animation1);
+	        buttons=(TextView)findViewById(R.id.popup_notes);
+	        if (buttons != null) {
+		        buttons.setOnClickListener(new View.OnClickListener() {
+		            @Override
+		            public void onClick(View v) {
+		                onDiaryEdit(Editor.NOTES);
+		            }
+		        });
+	        }
+	        animation1.setStartOffset(200);
+	        if (buttons != null) {
+		        buttons.setAnimation(animation1);
+	        }
 
-            buttons=(TextView)findViewById(R.id.popup_diary);
-            buttons.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onDiaryEdit(Editor.DIARY);
-                }
-            });
-            animation2.setStartOffset(300);
-            buttons.setAnimation(animation2);
+	        buttons=(TextView)findViewById(R.id.popup_diary);
+	        if (buttons != null) {
+		        buttons.setOnClickListener(new View.OnClickListener() {
+		            @Override
+		            public void onClick(View v) {
+		                onDiaryEdit(Editor.DIARY);
+		            }
+		        });
+	        }
+	        animation2.setStartOffset(300);
+	        if (buttons != null) {
+		        buttons.setAnimation(animation2);
+	        }
         }else {//Lets remove every thing
             popped =true;
 
             fab.animate().rotation(0).setDuration(100).start();
-            findViewById(R.id.popup_buttons).setVisibility(View.GONE);
-            findViewById(R.id.popup_list).setOnClickListener(null);
-            findViewById(R.id.popup_notes).setOnClickListener(null);
-            findViewById(R.id.popup_diary).setOnClickListener(null);
+	        LinearLayout ln=(LinearLayout) findViewById(R.id.popup_buttons);
+	        if (ln!=null)
+                ln.setVisibility(View.GONE);
+
+	        TextView tv=(TextView) findViewById(R.id.popup_list);
+            if(tv!=null)
+            	tv.setOnClickListener(null);
+	        tv=(TextView) findViewById(R.id.popup_notes);
+	        if(tv!=null)
+		        tv.setOnClickListener(null);
+	        tv=(TextView) findViewById(R.id.popup_diary);
+	        if(tv!=null)
+		        tv.setOnClickListener(null);
         }
     }
 
@@ -254,7 +280,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         startActivity(intent);
     }
 
-    /** Event Listeners **/
+    /* Event Listeners */
     /**
      * Event Listener for Notifications fragment
      * @param action the action code
@@ -299,7 +325,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     /**
      * Helper class of MainActivity
      */
-    public class Coordinator implements Runnable {
+    private class Coordinator implements Runnable {
         private Thread thread;
         private boolean threadActive=true;
 
@@ -324,12 +350,12 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         /**
          * Stops the thread
          */
-        public void stop(){
+        void stop(){
             threadActive=false;
         }
     }
 
-    public class CrashlyticsTree extends Timber.Tree{
+    private class CrashlyticsTree extends Timber.Tree{
         private static final String CRASHLYTICS_KEY_PRIORITY = "priority";
         private static final String CRASHLYTICS_KEY_TAG = "tag";
         private static final String CRASHLYTICS_KEY_MESSAGE = "message";
