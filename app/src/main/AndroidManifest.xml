@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.solidskulls.diaryline" >
+    package="com.solidskulls.diaryline">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="false">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".DLMainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,6 +30,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="diaryline.solidskulls.com"
                     android:pathPrefix="/home"
@@ -39,7 +40,7 @@
         <activity
             android:name=".Settings"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".DLMainActivity" >
+            android:parentActivityName=".DLMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="DLMainActivity" />
@@ -48,7 +49,7 @@
             android:name=".Help"
             android:label="@string/title_activity_help"
             android:parentActivityName=".DLMainActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="DLMainActivity" />
@@ -57,7 +58,7 @@
             android:name=".Editor"
             android:label="@string/title_activity_editor"
             android:parentActivityName=".DLMainActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.solidskulls.diaryline.DLMainActivity" />
@@ -67,26 +68,23 @@
             android:name=".data.ContentManager"
             android:authorities="com.solidskulls.diaryline"
             android:enabled="true"
-            android:exported="false" >
-        </provider>
+            android:exported="false"/>
 
         <activity
             android:name=".ui.SignatureMaker"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"/>
 
         <receiver
             android:name=".LauncherTaskBG"
             android:enabled="true"
-            android:exported="false" >
-        </receiver>
+            android:exported="false"/>
 
         <activity
             android:name=".EditorList"
             android:label="@string/title_activity_editor_list"
             android:parentActivityName=".DLMainActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.solidskulls.diaryline.DLMainActivity" />

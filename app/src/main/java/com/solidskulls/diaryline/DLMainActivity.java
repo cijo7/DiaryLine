@@ -64,7 +64,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         EnvironmentVariables.initialise(this);
         navigatorView.navigatorViewInIt(EnvironmentVariables.SCREEN_WIDTH, EnvironmentVariables.SCREEN_HEIGHT);//Initialise navigation view
 
-
         navigatorView.setNavigationData(Calendar.getInstance().getTimeInMillis());
 
         viewPager.setAdapter(dlFragmentPageAdapter);/*
@@ -103,7 +102,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
             }
         });
 
-        
         /*Intent intent=new Intent(this,LauncherTaskBG.class);
         intent.putExtra(LauncherTaskBG.MESSAGE, LauncherTaskBG.SKIP);
         PendingIntent pendingIntent= PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -123,7 +121,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     public boolean onOptionsItemSelected(MenuItem item) {                   // Handle action bar item clicks here. The action bar will automatically handle clicks on
                                                                             // the Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-                                                                            //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_settings) {
             startActivity(new Intent(this,Settings.class));
         }else if(id==R.id.action_help)
@@ -256,7 +254,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         startActivity(intent);
     }
 
-
     /** Event Listeners **/
     /**
      * Event Listener for Notifications fragment
@@ -298,7 +295,6 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         if(!popped)
             showPopup();
     }
-
 
     /**
      * Helper class of MainActivity
