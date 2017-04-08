@@ -24,29 +24,29 @@
         android:layout_height="2dp"
         android:background="@color/dividerColor"
         android:layout_below="@id/editorList_title"/>
-<RelativeLayout
-    android:id="@+id/editorList_reminderLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/editorList_divider"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true">
-    <ImageButton
-        android:id="@+id/editorList_reminder"
+    <RelativeLayout
+        android:id="@+id/editorList_reminderLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_reminder_24dp"
-        android:contentDescription="@string/editor_reminder"
-        android:background="@null" />
-    <TextView
-        android:id="@+id/editorList_reminder_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/editorList_reminder"
-        android:layout_toEndOf="@id/editorList_reminder"/>
+        android:layout_below="@id/editorList_divider"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
+        <ImageButton
+            android:id="@+id/editorList_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_reminder_24dp"
+            android:contentDescription="@string/editor_reminder"
+            android:background="@null" />
+        <TextView
+            android:id="@+id/editorList_reminder_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/editorList_reminder"
+            android:layout_toEndOf="@id/editorList_reminder"/>
 
-</RelativeLayout>
+    </RelativeLayout>
 
 
 

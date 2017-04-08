@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <CheckBox
         android:id="@+id/editorList_checkbox"
         android:layout_width="wrap_content"
@@ -11,11 +11,11 @@
         android:layout_marginBottom="10dp"
         android:padding="5dp"
         android:textSize="15sp" />
-    <!--<View
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/editorList_checkbox"
-        android:background="@color/dividerColor" />-->
+        android:background="@color/dividerColor" />
 
 
 </RelativeLayout>
