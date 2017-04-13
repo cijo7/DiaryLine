@@ -20,9 +20,9 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "com.solidskulls.diaryline"
+        applicationId "com.cijo7.diaryline"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }

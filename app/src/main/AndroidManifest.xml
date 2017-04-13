@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.solidskulls.diaryline">
+    package="com.cijo7.diaryline">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DLMainActivity"
+            android:name="com.cijo7.diaryline.DLMainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -38,56 +38,56 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Settings"
+            android:name="com.cijo7.diaryline.Settings"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".DLMainActivity">
+            android:parentActivityName="com.cijo7.diaryline.DLMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="DLMainActivity" />
+                android:value="com.cijo7.diaryline.DLMainActivity" />
         </activity>
         <activity
-            android:name=".Help"
+            android:name="com.cijo7.diaryline.Help"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".DLMainActivity"
+            android:parentActivityName="com.cijo7.diaryline.DLMainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="DLMainActivity" />
+                android:value="com.cijo7.diaryline.DLMainActivity" />
         </activity>
         <activity
-            android:name=".Editor"
+            android:name="com.cijo7.diaryline.Editor"
             android:label="@string/title_activity_editor"
-            android:parentActivityName=".DLMainActivity"
+            android:parentActivityName="com.cijo7.diaryline.DLMainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.solidskulls.diaryline.DLMainActivity" />
+                android:value="com.cijo7.diaryline.DLMainActivity" />
         </activity>
 
         <provider
-            android:name=".data.ContentManager"
-            android:authorities="com.solidskulls.diaryline"
+            android:name="com.cijo7.diaryline.data.ContentManager"
+            android:authorities="com.cijo7.diaryline"
             android:enabled="true"
             android:exported="false"/>
 
         <activity
-            android:name=".ui.SignatureMaker"
+            android:name="com.cijo7.diaryline.ui.SignatureMaker"
             android:screenOrientation="landscape"/>
 
         <receiver
-            android:name=".LauncherTaskBG"
+            android:name="com.cijo7.diaryline.LauncherTaskBG"
             android:enabled="true"
             android:exported="false"/>
 
         <activity
-            android:name=".EditorList"
+            android:name="com.cijo7.diaryline.EditorList"
             android:label="@string/title_activity_editor_list"
-            android:parentActivityName=".DLMainActivity"
+            android:parentActivityName="com.cijo7.diaryline.DLMainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.solidskulls.diaryline.DLMainActivity" />
+                android:value="com.cijo7.diaryline.DLMainActivity" />
         </activity>
 
         <meta-data

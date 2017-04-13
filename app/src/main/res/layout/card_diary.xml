@@ -21,7 +21,7 @@
                 android:drawableStart="@drawable/ic_info_black_24dp"
                 style="@style/cardTitle"
                 android:background="#ec3345"/>
-            <com.solidskulls.diaryline.ui.DateView
+            <com.cijo7.diaryline.ui.DateView
                 android:layout_width="115dp"
                 android:layout_height="47dp"
                 app:fontName="AllerDisplay.ttf"

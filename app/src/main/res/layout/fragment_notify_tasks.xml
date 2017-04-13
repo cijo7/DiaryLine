@@ -1,5 +1,5 @@
  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="com.solidskulls.diaryline.NotifyTasks"
+    xmlns:tools="http://schemas.android.com/tools" tools:context="com.cijo7.diaryline.NotifyTasks"
     tools:showIn="@layout/activity_dlmain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
