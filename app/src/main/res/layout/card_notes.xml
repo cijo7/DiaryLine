@@ -16,8 +16,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/action_settings"
-                android:drawableLeft="@drawable/ic_profile_24dp"
-                android:drawableStart="@drawable/ic_profile_24dp"
+                android:drawableLeft="@drawable/ic_note_white_24dp"
+                android:drawableStart="@drawable/ic_note_white_24dp"
                 style="@style/cardTitle"
                 android:background="#ffac07"/>
             <TextView

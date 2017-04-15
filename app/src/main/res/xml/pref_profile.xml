@@ -33,7 +33,7 @@
         android:title="@string/pref_profile_signature_title"
         android:dependency="@string/pref_profile_signature_on">
         <intent
-            android:targetPackage="com.solidskulls.diaryline"
-            android:targetClass="com.solidskulls.diaryline.SignatureMaker"/>
+            android:targetPackage="com.cijo7.diaryline"
+            android:targetClass="com.cijo7.diaryline.ui.SignatureMaker"/>
     </Preference>
     </PreferenceScreen>

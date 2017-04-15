@@ -16,8 +16,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#0087ac"
-                android:drawableLeft="@drawable/ic_done_24dp"
-                android:drawableStart="@drawable/ic_done_24dp"
+                android:drawableLeft="@drawable/ic_list_white_24dp"
+                android:drawableStart="@drawable/ic_list_white_24dp"
                 android:text="@string/action_reply"
                 style="@style/cardTitle"/>
             <CheckBox
