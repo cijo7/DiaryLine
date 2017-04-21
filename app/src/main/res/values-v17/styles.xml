@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Cards">
+        <item name="contentPaddingBottom">@dimen/cardPadding</item>
+        <item name="cardCornerRadius">@dimen/cardCornerRadius</item>
+        <item name="android:layout_marginStart">@dimen/cardMargin</item>
+        <item name="android:layout_marginEnd">@dimen/cardMargin</item>
+    </style>
+</resources>

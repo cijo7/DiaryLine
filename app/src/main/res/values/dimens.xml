@@ -20,8 +20,8 @@
     <dimen name="cardTitlePadding">5dp</dimen>
     <dimen name="cardTitleIconPadding">5dp</dimen>
     <dimen name="cardPadding">0dp</dimen>
-    <dimen name="cardCornerRadius">5dp</dimen>
-    <dimen name="cardMargin">4dp</dimen>
+    <dimen name="cardCornerRadius">0dp</dimen>
+    <dimen name="cardMargin">2dp</dimen>
 
     <dimen name="cardTextPadding">10dp</dimen>
     <dimen name="cardTextSize">15sp</dimen>

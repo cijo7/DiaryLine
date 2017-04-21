@@ -29,7 +29,8 @@
     <style name="Cards">
         <item name="contentPaddingBottom">@dimen/cardPadding</item>
         <item name="cardCornerRadius">@dimen/cardCornerRadius</item>
-        <item name="android:layout_margin">@dimen/cardMargin</item>
+        <item name="android:layout_marginLeft">@dimen/cardMargin</item>
+        <item name="android:layout_marginRight">@dimen/cardMargin</item>
     </style>
     <style name="cardTitle">
         <item name="android:textSize">@dimen/cardTitleTextSize</item>

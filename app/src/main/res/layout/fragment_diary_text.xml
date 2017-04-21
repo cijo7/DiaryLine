@@ -17,14 +17,15 @@
         android:text="@string/empty_string"
         android:textSize="20sp"
         android:layout_gravity="center_vertical"
-        android:visibility="visible"
-        android:layout_centerHorizontal="true"/>
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/content_recycler"
         android:layout_width="match_parent"
         android:visibility="visible"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
