@@ -17,7 +17,7 @@ class DLFragmentPageAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        return DiaryTextPreview.newInstance(position%(DLMainActivity.COUNT/2));
+        return DiaryTextPreview.newInstance(position-(DLMainActivity.COUNT/2));
     }
 
     @Override

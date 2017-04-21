@@ -2,6 +2,8 @@ package com.cijo7.diaryline;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -25,7 +27,10 @@ import java.util.Calendar;
 
 import timber.log.Timber;
 
-public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnFragmentInteractionListener,DiaryTextPreview.OnContentInteractionListener {
+public class DLMainActivity extends AppCompatActivity implements
+		NotifyTasks.OnFragmentInteractionListener,
+		DiaryTextPreview.OnContentInteractionListener,
+		Parcelable{
 
     private boolean mNotificationStatus =false;
     static int COUNT=20000;
@@ -37,7 +42,26 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
     private static int mPosition=COUNT/2;
     public Coordinator mCoordinator;
     private boolean notPopped =true;
-    @Override
+
+	protected DLMainActivity(Parcel in) {
+		mNotificationStatus = in.readByte() != 0;
+		notPopped = in.readByte() != 0;
+		mPosition = in.readInt();
+	}
+
+	public static final Creator<DLMainActivity> CREATOR = new Creator<DLMainActivity>() {
+		@Override
+		public DLMainActivity createFromParcel(Parcel in) {
+			return new DLMainActivity(in);
+		}
+
+		@Override
+		public DLMainActivity[] newArray(int size) {
+			return new DLMainActivity[size];
+		}
+	};
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
@@ -65,7 +89,7 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
         EnvironmentVariables.initialise(this);
         navigatorView.navigatorViewInIt(EnvironmentVariables.SCREEN_WIDTH, EnvironmentVariables.SCREEN_HEIGHT);//Initialise navigation view
 
-        navigatorView.setNavigationData(Calendar.getInstance().getTimeInMillis() +(mPosition%(COUNT/2))*24*60*60*1000);
+        navigatorView.setNavigationData(Calendar.getInstance().getTimeInMillis() +(mPosition-(COUNT/2))*24*60*60*1000);
 
         viewPager.setAdapter(dlFragmentPageAdapter);/*
         viewPager.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -260,7 +284,8 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
      */
     private void onDiaryEdit(int type){
         Intent intent=new Intent(this,Editor.class);
-        intent.putExtra(Editor.EDITOR_MODE, Editor.MODE_ADD);
+	    // FIXME: 21/4/17 Prevent adding multiple diary entry for same day.
+	    intent.putExtra(Editor.EDITOR_MODE, Editor.MODE_ADD);
         intent.putExtra(Editor.EDITOR_TYPE,type);
         startActivity(intent);
         if(!notPopped)
@@ -317,7 +342,19 @@ public class DLMainActivity extends AppCompatActivity implements NotifyTasks.OnF
             showPopup();
     }
 
-    /**
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeByte((byte) (mNotificationStatus?1:0));
+		dest.writeByte((byte) (notPopped?1:0));
+		dest.writeInt(mPosition);
+	}
+
+	/**
      * Helper class of MainActivity
      */
     private class Coordinator implements Runnable {
