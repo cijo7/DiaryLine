@@ -11,7 +11,6 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.ParagraphStyle;
-import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.SubscriptSpan;
@@ -76,7 +75,7 @@ public class HtmlSpannableParser {
                             }
                         break;
                     case XmlPullParser.TEXT:
-                        builder.append(parser.getText());
+                        builder.append(trim(parser.getText()));
                         break;
                     case XmlPullParser.END_TAG:
                         end=builder.length();
@@ -96,6 +95,11 @@ public class HtmlSpannableParser {
         }
         return builder;
     }
+
+    private static CharSequence trim(String text) {
+        return text.replace("\n","");
+    }
+
     private static Object getType(String tag,int attr){
         switch (tag){
             case "b":
@@ -215,12 +219,12 @@ public class HtmlSpannableParser {
 
             if (withinParagraph(out, text, i, next - nl, nl, next == end)) {
                 /* Paragraph should be closed */
-                out.append("</p>");
+                out.append("</p>\n");
                 out.append(getOpenParaTagWithDirection(text, next, end));
             }
         }
 
-        out.append("</p>");
+        out.append("</p>\n");
     }
 
     /* Returns true if the caller should close and reopen the paragraph. */
@@ -347,7 +351,7 @@ public class HtmlSpannableParser {
         }
 
         if (nl == 1) {
-            out.append("<br/>");
+            out.append("<br/>\n");
             return false;
         } else {
             for (int i = 2; i < nl; i++) {
