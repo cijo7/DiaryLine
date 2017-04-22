@@ -3,8 +3,10 @@ package com.cijo7.diaryline;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -124,8 +126,9 @@ public class Editor extends AppCompatActivity {
             dataBlockContainer.setTag(AppConstants.DIARY);
 
         editorText=(EditText)findViewById(R.id.editor_text);
-        // TODO: 4/2/16 Allow enabling or disabling the parser from settings.
-        editorText.addTextChangedListener(new EditorParser(this));
+        SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean(getString(R.string.parserState),true))
+            editorText.addTextChangedListener(new EditorParser(this));
     }
 
     private Context getContext(){

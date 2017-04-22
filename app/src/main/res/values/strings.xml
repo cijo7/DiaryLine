@@ -131,4 +131,6 @@
     <string name="other">Other</string>
     <string name="share">Share</string>
     <string name="logout">Logout</string>
+    <string name="editorParser">Rich Text Editor</string>
+    <string name="parserState">parser</string>
 </resources>

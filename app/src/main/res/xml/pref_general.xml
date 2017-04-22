@@ -8,6 +8,10 @@
         android:entryValues="@array/pref_general_tts_values"
         android:defaultValue="1"
         />
+    <SwitchPreference
+        android:key="@string/parserState"
+        android:title="@string/editorParser"
+        android:defaultValue="true"/>
 
 
 </PreferenceScreen>
