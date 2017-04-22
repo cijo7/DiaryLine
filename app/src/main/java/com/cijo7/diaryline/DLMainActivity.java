@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cijo7.diaryline.data.DiaryManager;
 import com.crashlytics.android.Crashlytics;
 import com.cijo7.diaryline.data.AppConstants;
 import com.cijo7.diaryline.data.DataBlockContainer;
@@ -42,6 +43,11 @@ public class DLMainActivity extends AppCompatActivity implements
     private static int mPosition=COUNT/2;
     public Coordinator mCoordinator;
     private boolean notPopped =true;
+
+	@SuppressWarnings("unused")
+	public DLMainActivity(){
+
+	}
 
 	protected DLMainActivity(Parcel in) {
 		mNotificationStatus = in.readByte() != 0;
@@ -228,12 +234,17 @@ public class DLMainActivity extends AppCompatActivity implements
 
 	        buttons=(TextView)findViewById(R.id.popup_diary);
 	        if (buttons != null) {
-		        buttons.setOnClickListener(new View.OnClickListener() {
-		            @Override
-		            public void onClick(View v) {
-		                onDiaryEdit(Editor.DIARY);
-		            }
-		        });
+		        if(DiaryManager.wroteToday(this)){
+			        buttons.setVisibility(View.GONE);
+		        }else{
+			        buttons.setVisibility(View.VISIBLE);
+			        buttons.setOnClickListener(new View.OnClickListener() {
+				        @Override
+				        public void onClick(View v) {
+					        onDiaryEdit(Editor.DIARY);
+				        }
+			        });
+		        }
 	        }
 	        animation2.setStartOffset(300);
 	        if (buttons != null) {
@@ -285,7 +296,7 @@ public class DLMainActivity extends AppCompatActivity implements
     private void onDiaryEdit(int type){
         Intent intent=new Intent(this,Editor.class);
 	    // FIXME: 21/4/17 Prevent adding multiple diary entry for same day.
-	    intent.putExtra(Editor.EDITOR_MODE, Editor.MODE_ADD);
+        intent.putExtra(Editor.EDITOR_MODE, Editor.MODE_ADD);
         intent.putExtra(Editor.EDITOR_TYPE,type);
         startActivity(intent);
         if(!notPopped)
