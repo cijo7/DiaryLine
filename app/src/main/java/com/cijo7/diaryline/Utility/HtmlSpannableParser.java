@@ -56,6 +56,7 @@ public class HtmlSpannableParser {
 
     public static Spanned toSpannable(String string){
         SpannableStringBuilder builder=new SpannableStringBuilder();
+        string = string.replace("\n","");
         int start=-1,end;
         int color= AppConstants.quoteColor;
         try {
@@ -63,25 +64,41 @@ public class HtmlSpannableParser {
             XmlPullParser parser=factory.newPullParser();
             parser.setInput(new StringReader(string));
             int event=parser.getEventType();
+            boolean skip = false, pre=false;
             while (event!=XmlPullParser.END_DOCUMENT){
                 switch (event){
                     case XmlPullParser.START_TAG:
+                        if (parser.isEmptyElementTag()) {
+                            builder.append(preTag(parser.getName()));
+                            skip = true;
+                            break;
+                        }
                         start=builder.length();
-                        if (parser.getName().equals("blockquote"))
-                            try {
+                        if (pre)
+                            builder.append(preTag(parser.getName()));
+                        pre = false;
+
+                        try{
+                            if(parser.getName().equals("blockquote")){
                                 color = Integer.parseInt(parser.getAttributeValue(0));
-                            }catch (NumberFormatException | IndexOutOfBoundsException e){
-                                Timber.d(e,"Unable to parse blockquote.");
                             }
+                        } catch (IndexOutOfBoundsException | NumberFormatException e){
+                            Timber.d(e,"Unable to retrieve attribute.");
+                        }
                         break;
                     case XmlPullParser.TEXT:
-                        builder.append(trim(parser.getText()));
+                        builder.append(parser.getText());
                         break;
                     case XmlPullParser.END_TAG:
+                        if (skip) {
+                            skip = false;
+                            break;
+                        }
                         end=builder.length();
-                        if(start!=end){
+                        if(start!=end && spansAvailable(parser.getName())){
                             builder.setSpan(getType(parser.getName(),color),start,end,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }
+                        pre = parser.getName().equals("p");
                         break;
                 }
                 try {
@@ -96,8 +113,23 @@ public class HtmlSpannableParser {
         return builder;
     }
 
-    private static CharSequence trim(String text) {
-        return text.replace("\n","");
+    private static String preTag(String name) {
+        switch (name) {
+            case "p":
+            case "blockquote":
+                return "\n\n";
+            case "br":
+                return "\n";
+            default:
+                return "";
+        }
+    }
+
+    private static boolean spansAvailable(String name) {
+        return name.equals("b") ||
+                name.equals("i") ||
+                name.equals("h1") ||
+                name.equals("blockquote");
     }
 
     private static Object getType(String tag,int attr){
@@ -169,7 +201,7 @@ public class HtmlSpannableParser {
 
             for (@SuppressWarnings("unused")
                     QuoteSpanModern quote : quotes) {
-                out.append("</blockquote>\n");
+                out.append("</blockquote>");
             }
         }
     }
@@ -219,12 +251,12 @@ public class HtmlSpannableParser {
 
             if (withinParagraph(out, text, i, next - nl, nl, next == end)) {
                 /* Paragraph should be closed */
-                out.append("</p>\n");
+                out.append("</p>");
                 out.append(getOpenParaTagWithDirection(text, next, end));
             }
         }
 
-        out.append("</p>\n");
+        out.append("</p>");
     }
 
     /* Returns true if the caller should close and reopen the paragraph. */
@@ -351,7 +383,7 @@ public class HtmlSpannableParser {
         }
 
         if (nl == 1) {
-            out.append("<br/>\n");
+            out.append("<br/>");
             return false;
         } else {
             for (int i = 2; i < nl; i++) {
