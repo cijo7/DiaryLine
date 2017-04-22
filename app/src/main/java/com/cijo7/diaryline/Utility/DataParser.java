@@ -1,4 +1,4 @@
-package com.cijo7.diaryline;
+package com.cijo7.diaryline.Utility;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -28,7 +28,7 @@ public class DataParser {
      * @param strings List of items to be packed.
      * @return Encoded XML string
      */
-    String listToText(List<String> strings){
+    public String listToText(List<String> strings){
         stringBuilder=new StringBuilder();
         stringList=strings;
         stringBuilder.append("<?xml version=\"1.0\"?>")
