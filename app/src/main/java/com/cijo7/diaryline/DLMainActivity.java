@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,7 +36,8 @@ import timber.log.Timber;
 public class DLMainActivity extends AppCompatActivity implements
 		NotifyTasks.OnFragmentInteractionListener,
 		DiaryTextPreview.OnContentInteractionListener,
-		Parcelable{
+		Parcelable,
+		NavigationView.OnNavigationItemSelectedListener{
 
     private boolean mNotificationStatus =false;
     static int COUNT=20000;
@@ -74,6 +80,37 @@ public class DLMainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_dlmain);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+				this,
+				drawer,
+				toolbar,
+				R.string.navigation_drawer_open,
+				R.string.navigation_drawer_close){
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				super.onDrawerClosed(drawerView);
+				if (getSupportActionBar()!=null)
+					getSupportActionBar().setTitle("DL");
+			}
+			@Override
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
+				if(getSupportActionBar()!=null)
+					getSupportActionBar().setTitle("Nano");
+			}
+		};
+
+		drawer.addDrawerListener(toggle);
+		toggle.syncState();
+		if (getSupportActionBar()!=null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+			getSupportActionBar().setHomeButtonEnabled(true);
+		}
+
+		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		navigationView.setNavigationItemSelectedListener(this);
 
         Timber.uprootAll();
         if(BuildConfig.DEBUG)
@@ -140,6 +177,39 @@ public class DLMainActivity extends AppCompatActivity implements
         alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis()+5*1000,pendingIntent);
         Timber.d("Alarm Set");*/
     }
+
+	@Override
+	public void onBackPressed() {
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		if (drawer.isDrawerOpen(GravityCompat.START)) {
+			drawer.closeDrawer(GravityCompat.START);
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	@SuppressWarnings("StatementWithEmptyBody")
+	@Override
+	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+		// Handle navigation view item clicks here.
+		int id = item.getItemId();
+
+		if (id == R.id.nav_camera) {
+			// Handle the camera action
+		} else if (id == R.id.nav_gallery) {
+
+		} else if (id == R.id.nav_slideshow) {
+
+		} else if (id == R.id.nav_share) {
+
+		} else if (id == R.id.nav_send) {
+
+		}
+
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawer.closeDrawer(GravityCompat.START);
+		return true;
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -295,7 +365,6 @@ public class DLMainActivity extends AppCompatActivity implements
      */
     private void onDiaryEdit(int type){
         Intent intent=new Intent(this,Editor.class);
-	    // FIXME: 21/4/17 Prevent adding multiple diary entry for same day.
         intent.putExtra(Editor.EDITOR_MODE, Editor.MODE_ADD);
         intent.putExtra(Editor.EDITOR_TYPE,type);
         startActivity(intent);

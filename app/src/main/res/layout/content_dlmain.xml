@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:paddingTop="?attr/actionBarSize"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.cijo7.diaryline.ui.NavigatorView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigator_view"/>
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/navigator_view"
+        android:id="@+id/viewPager"/>
+
+
+    <LinearLayout
+        android:id="@+id/popup_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/overlay_bg"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            tools:ignore="UselessParent">
+            <TextView
+                android:id="@+id/popup_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_list"
+                android:text="@string/popup_list"
+                android:layout_weight="1"
+                android:gravity="center"
+                style="@style/popupActionButtons"
+                />
+            <TextView
+                android:id="@+id/popup_notes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_notes"
+                android:text="@string/popup_notes"
+                android:layout_weight="1"
+                android:gravity="center"
+                style="@style/popupActionButtons"
+                />
+            <TextView
+                android:id="@+id/popup_diary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_diary"
+                android:text="@string/popup_diary"
+                android:layout_weight="1"
+                android:gravity="center"
+                style="@style/popupActionButtons"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -13,13 +13,19 @@
     <color name="navigationView_textDate">#ffffff</color>
     <color name="navigationView_textMonthYear">#515151</color>
 
+    <!-- Nav Drawer Gradient -->
+    <color name="navStart">#81C784</color>
+    <color name="navMid">#4CAF50</color>
+    <color name="navEnd">#2E7D32</color>
 
+    <!-- Editor-->
     <color name="quoteBlock">#606060</color>
 
+    <!--Popup background-->
     <color name="overlay_bg">#ffffff</color>
 
-
     <color name="dividerColor">#717171</color>
+
     <!--Basic-->
     <color name="white">#ffffff</color>
 

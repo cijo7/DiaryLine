@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.cijo7.diaryline.DataParser;
+import com.cijo7.diaryline.Utility.DataParser;
 import com.cijo7.diaryline.R;
 
 import java.util.List;

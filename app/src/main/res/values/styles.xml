@@ -7,12 +7,15 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 
     <style name="funkyButton">
@@ -25,13 +28,13 @@
     </style>
 
 
-
     <style name="Cards">
         <item name="contentPaddingBottom">@dimen/cardPadding</item>
         <item name="cardCornerRadius">@dimen/cardCornerRadius</item>
         <item name="android:layout_marginLeft">@dimen/cardMargin</item>
         <item name="android:layout_marginRight">@dimen/cardMargin</item>
     </style>
+
     <style name="cardTitle">
         <item name="android:textSize">@dimen/cardTitleTextSize</item>
         <item name="android:textColor">@color/white</item>
@@ -40,6 +43,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">sans</item>
     </style>
+
     <style name="cardText">
         <item name="android:padding">@dimen/cardTextPadding</item>
         <item name="android:textSize">@dimen/cardTextSize</item>
