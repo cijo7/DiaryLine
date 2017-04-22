@@ -180,6 +180,7 @@ public class Editor extends AppCompatActivity {
                 dataBlockContainer.setDate(format.format(new Date()));
                 if(contentType==NOTES) {
                     dataBlockContainer.setTitle(title.getText().toString());
+                    dataBlockContainer.setReminder(format.format(reminderDate.getTime()));
                     if (DataBlockManager.addNotes(dataBlockContainer, this)) {
                         Toast.makeText(this, getString(R.string.save), Toast.LENGTH_LONG).show();
                     } else
@@ -195,6 +196,7 @@ public class Editor extends AppCompatActivity {
                 dataBlockContainer.setText(HtmlSpannableParser.toHtml(editorText.getText()));
                 if(contentType==NOTES) {
                     dataBlockContainer.setTitle(title.getText().toString());
+                    dataBlockContainer.setReminder(format.format(reminderDate.getTime()));
                     if (DataBlockManager.updateNotes(dataBlockContainer, this)) {
                         Toast.makeText(this, getString(R.string.save), Toast.LENGTH_LONG).show();
                     } else
