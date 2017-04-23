@@ -6,10 +6,13 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AlignmentSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.cijo7.diaryline.EnvironmentVariables;
 import com.cijo7.diaryline.Utility.DataParser;
 import com.cijo7.diaryline.R;
 
@@ -67,8 +70,8 @@ class ViewHolderGenericLists extends VewHolderGeneric {
 
         for (int i = 0; i < size; i++) {
             if(i>=3){
-                if(size-3==1) {
-                    stringBuilder.append(Integer.toString(i+1)).append(")").append(stringList.get(i));
+                if(size==4) {
+                    stringBuilder.append(getLine(Integer.toString(i + 1)+")"+stringList.get(i)));
                     break;
                 }
                 int len=stringBuilder.length();
@@ -82,9 +85,25 @@ class ViewHolderGenericLists extends VewHolderGeneric {
                 }, len, stringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             }
-            // FIXME: 7/2/16 Multiline TextView should only show one item per line
-            stringBuilder.append(Integer.toString(i + 1)).append(")").append(stringList.get(i)).append('\n');
+            stringBuilder.append(getLine(Integer.toString(i + 1)+")"+stringList.get(i))).append('\n');
         }
         lists.setText(stringBuilder);
+    }
+
+    private String getLine(String text){
+        float textWidth;
+        int i=0,len=text.length();
+        try {
+            textWidth = lists.getPaint().measureText(text.substring(0, len));
+            if (textWidth < EnvironmentVariables.SCREEN_WIDTH-EnvironmentVariables.getPixelsFromDp(24))
+                return text;
+            do {
+                i++;
+                textWidth = lists.getPaint().measureText(text.substring(0, len - i) + "...");
+            } while (textWidth >= EnvironmentVariables.SCREEN_WIDTH-EnvironmentVariables.getPixelsFromDp(24));
+        }catch (Exception e){
+            Timber.d(e,"Failed to layout.");
+        }
+        return text.substring(0,len-i)+"...";
     }
 }

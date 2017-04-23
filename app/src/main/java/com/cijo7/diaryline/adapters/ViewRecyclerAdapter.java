@@ -109,7 +109,7 @@ public class ViewRecyclerAdapter extends RecyclerView.Adapter<VewHolderGeneric> 
         try {
             holder.setDate(displayDate.format(format.parse(dataBlockContainers.get(position).getDate())));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Timber.d(e,"Parse Exception.");
         }
     }
 
